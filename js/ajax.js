@@ -27,7 +27,6 @@ function AfficherPlanHTML() {
             // On fait 4 rangées de 16 places
             for (var n = 1; n <= 4; n++) {
                 html += "<div id='range" + n + "'>";
-
                 for (var p = 0; p < 16; p++) {
                     if (index < donnees.length) {
                         var capteur = donnees[index];
@@ -53,9 +52,7 @@ function AfficherPlanHTML() {
                     }
                     index++;
                 }
-
                 html += "</div>";
-
                 // On ajoute un chemin entre la rangée 1-2 et 3-4
                 if (n == 1 || n == 3) {
                     html += "<div id='chemin'></div>";
