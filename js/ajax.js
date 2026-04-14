@@ -39,11 +39,9 @@ function AfficherPlanHTML() {
                             totalOccupee++;
                         }
                         var couleur = estLibre ? "place vert" : "place rouge";
-                        
                         // On choisit une image de voiture parmi les 4 disponibles dans le dossier plan/
                         var numVoiture = (index % 4) + 1;
                         var contenuPlace = estLibre ? "" : "<img src='plan/voiture" + numVoiture + ".png' class='voiture-img' alt='Voiture'>";
-
                         // Texte qui s'affiche au survol de la souris
                         var texte = "Capteur " + capteur.nom + " | " + capteur.etat + " depuis le " + capteur.date_heure;
                         html += "<div class='" + couleur + "' data-info='" + texte + "'>" + contenuPlace + "</div>";
@@ -58,9 +56,7 @@ function AfficherPlanHTML() {
                     html += "<div id='chemin'></div>";
                 }
             }
-
             html += "</div>";
-            
             // Résumé des places
             html += "<div class='resume-parking'>";
             html += "<p><strong>Places Libres :</strong> <span class='texte-vert'>" + totalLibre + "</span></p>";
@@ -94,10 +90,8 @@ function AfficherListeHTML() {
             // On parcourt tous les capteurs
             for (var i = 0; i < donnees.length; i++) {
                 var capteur = donnees[i];
-
                 // On choisit la couleur selon l'etat
                 var couleur = (capteur.etat == "Libre") ? "vert" : "rouge";
-
                 // Quand on clique sur la ligne ca ouvre l'historique
                 html += "<tr onclick='AfficherHistoriqueCapteur(" + capteur.id + ")' style='cursor:pointer;' title='Voir Historique'>";
                 html += "<td>" + capteur.nom + "</td>";
@@ -108,7 +102,6 @@ function AfficherListeHTML() {
                 html += "<td>" + capteur.eclairage + "</td>";
                 html += "</tr>";
             }
-
             html += "</table></div>";
             section.innerHTML = html;
         }

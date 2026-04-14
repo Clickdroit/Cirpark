@@ -12,7 +12,7 @@ if (isset($_SERVER['PATH_INFO'])) {
     $req_path = $_SERVER['PATH_INFO'];
     $req_data = explode('/', $req_path);
 }
-
+//.................. Pour le GET...........
 if ($req_methode == 'GET') {
     if (count($req_data) == 2 && $req_data[1] == 'capteur') {
         $requete = "SELECT capteur.id, capteur.nom, capteur.type, capteur.numero, etat.etat, etat.date_heure, configuration.hauteur, configuration.eclairage 
@@ -64,115 +64,131 @@ if ($req_methode == 'GET') {
 
 //.................. Pour le POST...........
 
-// if ($req_methode == 'POST') {
+if ($req_methode == 'POST') {
 
-    // Ajouter un état
-    //if (count($req_data) == 3 && $req_data[1] == 'capteur' && $req_data[2] == 'etat') {
+    $donnees_json = file_get_contents('php://input');
+    $donnees = json_decode($donnees_json, true);
 
-        //$input = json_decode(file_get_contents("php://input"), true);
+    // POST /capteur
+    if (count($req_data) == 2 && $req_data[1] == 'capteur') {
+        $nom = $donnees['nom'];
+        $type = $donnees['type'];
+        $numero = $donnees['numero'];
+        $description = $donnees['description'];
 
-       // $requete = "INSERT INTO etat (id_capteur, etat, date_heure) 
-                    //VALUES (:id_capteur, :etat, NOW())";
+        $requete = "INSERT INTO capteur (nom, type, numero, description) VALUES (:nom, :type, :numero, :description)";
+        $req_prep = $maConnexion->prepare($requete);
+        $req_prep->bindValue(':nom', $nom);
+        $req_prep->bindValue(':type', $type);
+        $req_prep->bindValue(':numero', $numero);
+        $req_prep->bindValue(':description', $description);
+        $req_prep->execute();
+        $req_prep->closeCursor();
 
-        //$req_prep = $maConnexion->prepare($requete);
-       // $req_prep->bindValue(':id_capteur', $input['id_capteur'], PDO::PARAM_INT);
-        //$req_prep->bindValue(':etat', $input['etat']);
-        //$req_prep->execute();
+        echo json_encode(["message" => "Capteur ajouté"]);
+    }
 
-       // echo json_encode(["message" => "Etat ajouté"]);
-    //}
+    // POST /capteur/etat
+    if (count($req_data) == 3 && $req_data[1] == 'capteur' && $req_data[2] == 'etat') {
+        $id_capteur = $donnees['id_capteur'];
+        $etat = $donnees['etat'];
 
-    // Ajouter une configuration
-    //if (count($req_data) == 3 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
+        $requete = "INSERT INTO etat (id_capteur, etat, date_heure) VALUES (:id_capteur, :etat, NOW())";
+        $req_prep = $maConnexion->prepare($requete);
+        $req_prep->bindValue(':id_capteur', $id_capteur, PDO::PARAM_INT);
+        $req_prep->bindValue(':etat', $etat);
+        $req_prep->execute();
+        $req_prep->closeCursor();
 
-        //$input = json_decode(file_get_contents("php://input"), true);
+        echo json_encode(["message" => "Etat ajouté"]);
+    }
 
-        //$requete = "INSERT INTO configuration (id_capteur, hauteur, eclairage) 
-                    //VALUES (:id_capteur, :hauteur, :eclairage)";
+    // POST /capteur/configuration
+    if (count($req_data) == 3 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
+        $id_capteur = $donnees['id_capteur'];
+        $hauteur = $donnees['hauteur'];
+        $eclairage = $donnees['eclairage'];
 
-        //$req_prep = $maConnexion->prepare($requete);
-        //$req_prep->bindValue(':id_capteur', $input['id_capteur'], PDO::PARAM_INT);
-        //$req_prep->bindValue(':hauteur', $input['hauteur']);
-        //$req_prep->bindValue(':eclairage', $input['eclairage']);
-      //  $req_prep->execute();
+        $requete = "INSERT INTO configuration (id_capteur, hauteur, eclairage) VALUES (:id_capteur, :hauteur, :eclairage)";
+        $req_prep = $maConnexion->prepare($requete);
+        $req_prep->bindValue(':id_capteur', $id_capteur, PDO::PARAM_INT);
+        $req_prep->bindValue(':hauteur', $hauteur);
+        $req_prep->bindValue(':eclairage', $eclairage);
+        $req_prep->execute();
+        $req_prep->closeCursor();
 
-    //    echo json_encode(["message" => "Configuration ajoutée"]);
-  //  }
-//}
+        echo json_encode(["message" => "Configuration ajoutée"]);
+    }
+}
 
 //.................. Pour le PUT...........
 
-//if ($req_methode == 'PUT') {
+if ($req_methode == 'PUT') {
+    $donnees_json = file_get_contents('php://input');
+    $donnees = json_decode($donnees_json, true);
 
-    // Modifier un état (par id_capteur)
-    //if (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'etat') {
+    // PUT /capteur/etat/{id}
+    if (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'etat') {
+        $id = (int)$req_data[3];
+        $etat = $donnees['etat'];
 
-        //$id = (int)$req_data[3];
-        //$input = json_decode(file_get_contents("php://input"), true);
+        $requete = "UPDATE etat SET etat = :etat WHERE id_capteur = :id ORDER BY id DESC LIMIT 1";
+        $req_prep = $maConnexion->prepare($requete);
+        $req_prep->bindValue(':etat', $etat);
+        $req_prep->bindValue(':id', $id, PDO::PARAM_INT);
+        $req_prep->execute();
+        $req_prep->closeCursor();
 
-        //$requete = "UPDATE etat 
-                    //SET etat = :etat 
-                    //WHERE id_capteur = :id";
+        echo json_encode(["message" => "Etat modifié"]);
+    }
 
-        //$req_prep = $maConnexion->prepare($requete);
-       // $req_prep->bindValue(':etat', $input['etat']);
-        //$req_prep->bindValue(':id', $id, PDO::PARAM_INT);
-        //$req_prep->execute();
+    // PUT /capteur/configuration/{id}
+    if (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
+        $id = (int)$req_data[3];
+        $hauteur = $donnees['hauteur'];
+        $eclairage = $donnees['eclairage'];
 
-       // echo json_encode(["message" => "Etat modifié"]);
-   // }
+        $requete = "UPDATE configuration SET hauteur = :hauteur, eclairage = :eclairage WHERE id_capteur = :id";
+        $req_prep = $maConnexion->prepare($requete);
+        $req_prep->bindValue(':hauteur', $hauteur);
+        $req_prep->bindValue(':eclairage', $eclairage);
+        $req_prep->bindValue(':id', $id, PDO::PARAM_INT);
+        $req_prep->execute();
+        $req_prep->closeCursor();
 
-    // Modifier une configuration
-    //if (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
-
-      //  $id = (int)$req_data[3];
-        //$input = json_decode(file_get_contents("php://input"), true);
-
-       // $requete = "UPDATE configuration 
-                  //  SET hauteur = :hauteur, eclairage = :eclairage 
-                   // WHERE id_capteur = :id";
-
-       // $req_prep = $maConnexion->prepare($requete);
-       // $req_prep->bindValue(':hauteur', $input['hauteur']);
-       // $req_prep->bindValue(':eclairage', $input['eclairage']);
-       // $req_prep->bindValue(':id', $id, PDO::PARAM_INT);
-       // $req_prep->execute();
-//
-      //  echo json_encode(["message" => "Configuration modifiée"]);
-    //}
-//}
-
-
+        echo json_encode(["message" => "Configuration modifiée"]);
+    }
+}
 
 //.................. Pour le DELETE...........
 
-//if ($req_methode == 'DELETE') {
-//
-//    // Supprimer les états d’un capteur
-//    if (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'etat') {
-//
-//        $id = (int)$req_data[3];
-//
-//        $requete = "DELETE FROM etat WHERE id_capteur = :id";
-//        $req_prep = $maConnexion->prepare($requete);
-//        $req_prep->bindValue(':id', $id, PDO::PARAM_INT);
-//        $req_prep->execute();
-//
-//        echo json_encode(["message" => "Etat supprimé"]);
-//    }
-//
-//    // Supprimer une configuration
-//    if (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
-//
-//        $id = (int)$req_data[3];
-//
-//        $requete = "DELETE FROM configuration WHERE id_capteur = :id";
-//        $req_prep = $maConnexion->prepare($requete);
-//        $req_prep->bindValue(':id', $id, PDO::PARAM_INT);
-//        $req_prep->execute();
-//
-//        echo json_encode(["message" => "Configuration supprimée"]);
-//    }
-//}
+if ($req_methode == 'DELETE') {
+
+    // DELETE /capteur/etat/{id}
+    if (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'etat') {
+        $id = (int)$req_data[3];
+
+        $requete = "DELETE FROM etat WHERE id_capteur = :id";
+        $req_prep = $maConnexion->prepare($requete);
+        $req_prep->bindValue(':id', $id, PDO::PARAM_INT);
+        $req_prep->execute();
+        $req_prep->closeCursor();
+
+        echo json_encode(["message" => "Etats supprimés"]);
+    }
+
+    // DELETE /capteur/configuration/{id}
+    if (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
+        $id = (int)$req_data[3];
+
+        $requete = "DELETE FROM configuration WHERE id_capteur = :id";
+        $req_prep = $maConnexion->prepare($requete);
+        $req_prep->bindValue(':id', $id, PDO::PARAM_INT);
+        $req_prep->execute();
+        $req_prep->closeCursor();
+
+        echo json_encode(["message" => "Configuration supprimée"]);
+    }
+}
 
 ?>

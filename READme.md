@@ -1,7 +1,7 @@
 <div align="center">
   <h1>✨ Une marocaine au portugal ✨</h1>
-  <p><b>Progression (23%) :</b></p>
-  <p>🟩 🟩 🟩 ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜</p>
+  <p><b>Progression (30%) :</b></p>
+  <p>🟩 🟩 🟩 🟩 ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜</p>
 </div>
 
 ---
@@ -15,11 +15,11 @@
 - [ ] Compléter le rest.php 
 - [x] Corriger le sql
 - [x] Réaliser le plan UML
-- [ ] Ajouter des fonctions PUT/DELETE/POST dans le php *(En priorité)*
-- [ ] Lorsque l'on clique sur un capteur, il faut afficher les infos du capteur et pouvoir modifier les infos du capteur *(Dès que PUT/DELETE/POST est fait)*
+- [x] Ajouter des fonctions PUT/DELETE/POST dans le php *(En priorité)*
+- [-] Lorsque l'on clique sur un capteur, il faut afficher les infos du capteur et pouvoir modifier les infos du capteur *(Dès que PUT/DELETE/POST est fait)*
 - [ ] Ajouter des graphiques
 - [ ] Faire une documentation 
 - [ ] Faire la page équipe
-- [ ] **SUIVRE LES ATTENDUES !!!**
+-  **SUIVRE LES ATTENDUES !!!**
 
 ## Taches a réaliséS :
