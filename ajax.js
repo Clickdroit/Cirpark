@@ -24,31 +24,28 @@ function AfficherPlanHTML() {
             // On fait 4 rangées de 16 places
             for (var n = 1; n <= 4; n++) {
                 html += "<div id='range" + n + "'>";
-
                 for (var p = 0; p < 16; p++) {
                     if (index < donnees.length) {
                         var capteur = donnees[index];
-
                         // Si le capteur est libre on met vert, sinon rouge
                         var couleur = (capteur.etat == "Libre") ? "place vert" : "place rouge";
-
+                        if(capteur.etat=="Libre"){
+                            var img = "img/voit.webp";
+                        } 
                         // Texte qui s'affiche au survol de la souris
                         var texte = "Capteur " + capteur.nom + " | " + capteur.etat + " depuis le " + capteur.date_heure;
-                        html += "<div class='" + couleur + "' data-info='" + texte + "'></div>";
+                        html += "<div class='" + couleur + "' data-info='" + texte + "'> <img src='" + img + "' alt='Voiture'></div>";
                     } else {
                         html += "<div class='place'></div>";
                     }
                     index++;
                 }
-
                 html += "</div>";
-
                 // On ajoute un chemin entre la rangée 1-2 et 3-4
                 if (n == 1 || n == 3) {
                     html += "<div id='chemin'></div>";
                 }
             }
-
             html += "</div>";
             section.innerHTML = html;
         }
