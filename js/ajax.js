@@ -16,6 +16,9 @@ function AfficherPlanHTML() {
             var donnees = JSON.parse(reponse);
             var section = document.getElementById("section");
 
+            var totalLibre = 0;
+            var totalOccupee = 0;
+
             // On construit le HTML du parking
             var html = "<h3>Plan du Parking</h3><br>";
             html += "<div id='parking'>";
@@ -29,12 +32,22 @@ function AfficherPlanHTML() {
                     if (index < donnees.length) {
                         var capteur = donnees[index];
 
-                        // Si le capteur est libre on met vert, sinon rouge
-                        var couleur = (capteur.etat == "Libre") ? "place vert" : "place rouge";
+                        // Si le capteur est libre on met vert, sinon rouge et on ajoute une image de voiture
+                        var estLibre = (capteur.etat == "Libre");
+                        if (estLibre) {
+                            totalLibre++;
+                        } else {
+                            totalOccupee++;
+                        }
+                        var couleur = estLibre ? "place vert" : "place rouge";
+                        
+                        // On choisit une image de voiture parmi les 4 disponibles dans le dossier plan/
+                        var numVoiture = (index % 4) + 1;
+                        var contenuPlace = estLibre ? "" : "<img src='plan/voiture" + numVoiture + ".png' class='voiture-img' alt='Voiture'>";
 
                         // Texte qui s'affiche au survol de la souris
                         var texte = "Capteur " + capteur.nom + " | " + capteur.etat + " depuis le " + capteur.date_heure;
-                        html += "<div class='" + couleur + "' data-info='" + texte + "'></div>";
+                        html += "<div class='" + couleur + "' data-info='" + texte + "'>" + contenuPlace + "</div>";
                     } else {
                         html += "<div class='place'></div>";
                     }
@@ -50,6 +63,13 @@ function AfficherPlanHTML() {
             }
 
             html += "</div>";
+            
+            // Résumé des places
+            html += "<div class='resume-parking'>";
+            html += "<p><strong>Places Libres :</strong> <span class='texte-vert'>" + totalLibre + "</span></p>";
+            html += "<p><strong>Places Occupées :</strong> <span class='texte-rouge'>" + totalOccupee + "</span></p>";
+            html += "</div>";
+            
             section.innerHTML = html;
         }
     };

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +16,7 @@
             <h1>Projet Cirpark</h1>
             <p>Gestion de parking intelligent</p>
         </div>
+        <button id="theme-toggle"></button>
         
         <!-- Menu de navigation -->
         <nav>
@@ -62,6 +63,10 @@
     </footer>
 
     <!-- Lien vers notre script JavaScript -->
-    <script src="ajax.js"></script>
+    <script src="js/ajax.js"></script>
+    <script type="module">
+        import { initTheme } from './js/theme.js';
+        initTheme();
+    </script> 
 </body>
 </html>
