@@ -13,13 +13,14 @@
 - [x] Corriger le sql
 - [x] Réaliser le plan UML
 - [x] Compléter le rest.php 
+- [x] Réparer le cirpark_client_udp.php 
 - [x] Ajouter des fonctions PUT/DELETE/POST dans le php *(En priorité)*
 - [-] Lorsque l'on clique sur un capteur, il faut afficher les infos du capteur et pouvoir modifier les infos du capteur *(Dès que PUT/DELETE/POST est fait)*
 
 ### 🟠 Priorité moyenne
 - [ ] Améliorée l'esthétique de l'interface *(Google Fonts, animations, icônes)*
-- [ ] Créer une meilleure étendu des capteurs + statistiques
-- [ ] Ajouter des graphiques *(Chart.js : taux d'occupation, camembert libre/occupé, heures de pointe)*
+- [-] Créer une meilleure étendu des capteurs + statistiques (Maxime)
+- [-] Ajouter des graphiques *(Chart.js : taux d'occupation, camembert libre/occupé, heures de pointe)* (Maxime)
 - [ ] Auto-refresh du dashboard *(rafraîchissement automatique des données toutes les X secondes)*
 - [ ] Faire fonctionner les liens de navigation *(Historique, Documentation, Équipe pointent vers # actuellement)*
 - [ ] Améliorer la dynamique du C++ 

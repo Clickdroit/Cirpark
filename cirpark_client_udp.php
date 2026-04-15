@@ -7,7 +7,7 @@ try {
 }
 echo "Base de données : OK\n";
 
-while(1){
+while(true){
     $requete= "SELECT id, numero FROM capteur";
     $req_prep = $pdo->prepare($requete);
     $req_prep->execute();
@@ -19,7 +19,7 @@ while(1){
         $adrl=$capteur[1];
         $codeFonction="10";
         $bcc=dechex(hexdec($adrh)+hexdec($adrl)+hexdec($codeFonction));
-        $ipServeur = "172.20.21.249";
+        $ipServeur = "172.18.112.123";
         $port = "10001";
         $message=hex2bin($adrh.$adrl.$codeFonction.$bcc);
         echo "message envoyé : ".$adrh.$adrl.$codeFonction.$bcc."\r\n";
@@ -38,25 +38,11 @@ while(1){
             $etatt = "Occupee";
             echo "La place est occupée ! \r\n";
         }
-        $req_dernier = $pdo->prepare("SELECT etat FROM etat WHERE id_capteur = ? ORDER BY id DESC LIMIT 1");
-        $req_dernier->bindParam(1, $resultat[$i]['id']);
-        $req_dernier->execute();
-        $donnees = $req_dernier->fetch(PDO::FETCH_ASSOC);
-        
-        $dernier_etat_enregistre = "";
-        if ($donnees != false) {
-            $dernier_etat_enregistre = $donnees['etat'];
-        }
-        if ($etatt != $dernier_etat_enregistre) {
-            $insert = "INSERT INTO etat (etat, date_heure, id_capteur) VALUES (?, NOW(), ?)";
-            $req_prep_insert = $pdo->prepare($insert);
-            $req_prep_insert->bindParam(1, $etatt);
-            $req_prep_insert->bindParam(2, $resultat[$i]['id']);
-            $req_prep_insert->execute();
-            echo "-> SAUVEGARDE EN BDD : on enregistre le nouvel état.\r\n";
-        } else {
-            echo "-> PAS DE SAUVEGARDE : la place est toujours dans le même état.\r\n";
-        }        
+        $req_insert = "INSERT INTO etat (etat, date_heure, id_capteur) VALUES (?, NOW(), ?)";
+        $req_prep_insert = $pdo->prepare($req_insert);
+        $req_prep_insert->bindParam(1, $etatt);
+        $req_prep_insert->bindParam(2, $resultat[$i]["id"]);
+        $req_prep_insert->execute();
         print_r("\r\n------------------------------------------------------------------------------------------------\r\n\r\n");
     }
     sleep(60);

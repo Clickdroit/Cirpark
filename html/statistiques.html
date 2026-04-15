@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projet Cirpark - BTS CIEL-IR 1</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
@@ -21,8 +21,8 @@
         <!-- Menu de navigation -->
         <nav>
             <ul>
-                <li><a href="../index.html" class="active">Accueil</a></li>
-                <li><a href="html/statistiques.html">Statistiques</a></li>
+                <li><a href="../index.html" >Accueil</a></li>
+                <li><a href="statistiques.html" class="active">Statistiques</a></li>
                 <li><a href="#">Historique</a></li>
                 <li><a href="#">Documentation</a></li>
                 <li><a href="#">Équipe</a></li>
@@ -37,24 +37,8 @@
             <p>Bienvenue sur l'interface de gestion des capteurs du parking.</p>
         </div>
 
-        <!-- Boutons d'action -->
-        <div class="boutons-container">
-            <!-- Bouton pour voir les capteurs -->
-            <button id="capteursNAV" class="bouton-action btn-vert">
-                <h3>Voir les Capteurs</h3>
-                <p>Affiche la liste détaillée de tous les capteurs en temps réel.</p>
-            </button>
-
-            <!-- Bouton pour voir le plan -->
-            <button id="planNAV" class="bouton-action btn-bleu">
-                <h3>Voir le Plan</h3>
-                <p>Affiche les places disponibles directement sur le plan.</p>
-            </button>
-        </div>
-
         <!-- Section où l'AJAX va afficher les tableaux ou plans -->
         <section id="section">
-            <p class="texte-attente">Cliquez sur un des boutons ci-dessus pour charger les données.</p>
         </section>
     </main>
 
@@ -64,9 +48,11 @@
     </footer>
 
     <!-- Lien vers notre script JavaScript -->
-    <script src="js/ajax.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/chart.js"></script>
+    <script src="../js/ajax.js"></script>
     <script type="module">
-        import { initTheme } from './js/theme.js';
+        import { initTheme } from '../js/theme.js';
         initTheme();
     </script> 
 </body>
