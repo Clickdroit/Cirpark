@@ -168,7 +168,7 @@ main {
 .btn-vert {
     background-color: var(--secondary-color);
     color: var(--white-color);
-    border-color: var(--secondary-color);
+    /*border-color: var(--secondary-color);*/
 }
 
 .btn-bleu {
@@ -419,4 +419,42 @@ footer {
 #theme-toggle:hover {
     transform: scale(1.1);
     background-color: var(--secondary-color);
+}
+
+/* =========== STATISTIQUES =========== */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.stats-card {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+}
+
+.stats-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.stats-card h3 {
+    font-size: 16px;
+    margin-bottom: 14px;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 280px;
+    width: 100%;
+}
+.stats-card:last-child {
+    grid-column: 1 / -1;
 }

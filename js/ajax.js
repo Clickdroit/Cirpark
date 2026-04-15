@@ -1,9 +1,13 @@
 // ajax.js - Projet Cirpark
 // Maxime, Ambre, Melissa
-document.getElementById('planNAV').addEventListener('click', AfficherPlanHTML);
-document.getElementById('capteursNAV').addEventListener('click', AfficherListeHTML);
-document.getElementById('Statistiques').addEventListener('click', stat);
-document.getElementById('Accueil').addEventListener('click', acceuil);
+var elPlan = document.getElementById('planNAV');
+var elCapteurs = document.getElementById('capteursNAV');
+var elStats = document.getElementById('Statistiques');
+var elAccueil = document.getElementById('Accueil');
+if (elPlan) elPlan.addEventListener('click', AfficherPlanHTML);
+if (elCapteurs) elCapteurs.addEventListener('click', AfficherListeHTML);
+if (elStats) elStats.addEventListener('click', stat);
+if (elAccueil) elAccueil.addEventListener('click', acceuil);
 function acceuil() {
     window.location.href = "../index.html";
 }

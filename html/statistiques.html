@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet Cirpark - BTS CIEL-IR 1</title>
+    <title>Statistiques - Cirpark</title>
+    <meta name="description" content="Statistiques en temps réel du parking intelligent Cirpark - taux d'occupation, état par capteur, évolution temporelle.">
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -21,7 +22,7 @@
         <!-- Menu de navigation -->
         <nav>
             <ul>
-                <li><a href="../index.html" >Accueil</a></li>
+                <li><a href="../index.html">Accueil</a></li>
                 <li><a href="statistiques.html" class="active">Statistiques</a></li>
                 <li><a href="#">Historique</a></li>
                 <li><a href="#">Documentation</a></li>
@@ -33,12 +34,35 @@
     <!-- Contenu principal -->
     <main>
         <div class="description-projet">
-            <h2>Tableau de Bord</h2>
-            <p>Bienvenue sur l'interface de gestion des capteurs du parking.</p>
+            <h2>Statistiques</h2>
+            <p>Statistiques de l'occupation et l'activité des capteurs.</p>
         </div>
-
-        <!-- Section où l'AJAX va afficher les tableaux ou plans -->
+        <div>
+            <button id="refreshbtn" class="boutton-action btn-vert" >
+                <h3 style="margin: 0;">Rafraîchir les données</h3>
+            </button>
+        </div>
         <section id="section">
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <h3>Taux d'occupation</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="occupationChart"></canvas>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <h3>Etat des capteurs</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="etatChart"></canvas>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <h3>Evolution de l'occupation</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="evolutionChart"></canvas>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -47,7 +71,7 @@
         <p>Projet réalisé par Maxime | Ambre | Melissa de BTS CIEL-IR - 1ère année</p>
     </footer>
 
-    <!-- Lien vers notre script JavaScript -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/chart.js"></script>
     <script src="../js/ajax.js"></script>
