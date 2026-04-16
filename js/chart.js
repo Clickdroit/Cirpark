@@ -1,13 +1,26 @@
 // chart.js - Statistiques Cirpark
 // Maxime, Ambre, Melissa
 
-var occupationChart = document.getElementById("occupationChart");
-var etatChart = document.getElementById("etatChart");
-var evolutionChart = document.getElementById("evolutionChart");
+var occupationChart = null;
+var etatChart = null;
+var evolutionChart = null;
 
 var chartOccupation = null;
 var chartEtat = null;
 var chartEvolution = null;
+
+// Vérifier que le DOM est prêt
+function initCharts() {
+    occupationChart = document.getElementById("occupationChart");
+    etatChart = document.getElementById("etatChart");
+    evolutionChart = document.getElementById("evolutionChart");
+    
+    if (!occupationChart || !etatChart || !evolutionChart) {
+        console.error("Erreur : éléments de graphique non trouvés");
+        return false;
+    }
+    return true;
+}
 
 // ========== 1. Camembert d'occupation =========
 function creerChartOccupation(totalLibre, totalOccupee) {
@@ -40,10 +53,55 @@ function creerChartEtat(totalNormale, totalInterdit, totalReserve, totalHandicap
 	chartEtat = new Chart(etatChart, {
 		type: "bar",
 		data: {
-			labels: ["Normale", "Interdit", "Reserve", "Handicape"],
+			labels: ["Normale", "Interdit", "Réservé", "Handicapé"],
 			datasets: [{
-				data: [totalNormale, totalInterdit, totalReserve, totalHandicape],
-				backgroundColor: ["#2ecc71", "#e74c3c", "#f1c40f", "#006eff"]
+				label: "Normale",
+				data: [totalNormale],
+				backgroundColor: "#2ecc71",
+			},{
+				label: "Interdit",
+				data: [totalInterdit],
+				backgroundColor: "#e74c3c"
+			},{
+				label: "Réservé",
+				data: [totalReserve],
+				backgroundColor: "#f1c40f"
+			},{
+				label: "Handicapé",
+				data: [totalHandicape],
+				backgroundColor: "#006eff"
+			}]
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			scales: {
+				y: {
+					beginAtZero: true,
+				}
+			},
+			plugins: {
+				legend: {
+					position: "bottom",
+					labels: { font: { size: 13 } }
+				}
+			}
+		}
+	});
+}
+function creerChartEvolution(heureOccupation, heureLibre) {
+	if (chartEvolution) chartEvolution.destroy();
+	chartEvolution = new Chart(evolutionChart,{
+		type: "line",
+		data:{
+
+			labels: ["0h", "2h", "4h", "6h", "8h", "10h", "12h", "14h", "16h", "18h", "20h", "22h"],
+			datasets:[{
+				label: "Occupation",
+				data: [heureOccupation],
+			}, {
+				label: "Libre",
+				data: [heureLibre],
 			}]
 		},
 		options: {
@@ -54,8 +112,13 @@ function creerChartEtat(totalNormale, totalInterdit, totalReserve, totalHandicap
 					position: "bottom",
 					labels: { font: { size: 13 } }
 				}
+			},
+			scales: {
+				y: {
+					beginAtZero: true,
+				}
 			}
-		}
+		},
 	});
 }
 function totalCapteur() {
@@ -82,6 +145,7 @@ function totalCapteur() {
 	xhttp.send();
 
 	var xhttp2 = new XMLHttpRequest();
+
 	xhttp2.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			var type = JSON.parse(this.responseText);
@@ -107,16 +171,31 @@ function totalCapteur() {
 	xhttp2.send();
 
 	var xhttp3 = new XMLHttpRequest();
+
 	xhttp3.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			var historique = JSON.parse(this.responseText);
-			//creerChartEvolution(historique);
+			var heureOccupation = new Array(12).fill(0);
+			var heureLibre = new Array(12).fill(0);
+			for (var i = 0; i < historique.length; i++) {
+				var date_heure = parseInt(historique[i].date_heure);
+				if (historique[i].etat == "Occupee") {
+					heureOccupation[Math.floor(date_heure / 2)]++;
+				} else if (historique[i].etat == "Libre") {
+					heureLibre[Math.floor(date_heure / 2)]++;
+				}
+			}
+			creerChartEvolution(heureOccupation, heureLibre);
 		}
 	};	
 	xhttp3.open("GET", "../rest.php/capteur/etat");
 	xhttp3.send();
 }
 function chargerStatistiques() {
-	totalCapteur();
+	if (initCharts()) {
+		totalCapteur();
+	}
 }
+
 chargerStatistiques();
+
