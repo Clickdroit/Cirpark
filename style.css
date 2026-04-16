@@ -458,3 +458,30 @@ footer {
 .stats-card:last-child {
     grid-column: 1 / -1;
 }
+
+/* =========== RESPONSIVE DESIGN =========== */
+
+/* =========== MOBILE =========== */
+@media screen and (max-width: 600px) {
+
+    nav ul {
+        flex-direction: column;
+    }
+
+    .boutons-container {
+        flex-direction: column;
+    }
+
+    .bouton-action {
+        width: 100%;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .resume-parking {
+        flex-direction: column;
+        text-align: center;
+    }
+}
