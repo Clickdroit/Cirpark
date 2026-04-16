@@ -2,21 +2,14 @@
 // Maxime, Ambre, Melissa
 var elPlan = document.getElementById('planNAV');
 var elCapteurs = document.getElementById('capteursNAV');
-var elStats = document.getElementById('Statistiques');
-var elAccueil = document.getElementById('Accueil');
 if (elPlan) elPlan.addEventListener('click', AfficherPlanHTML);
 if (elCapteurs) elCapteurs.addEventListener('click', AfficherListeHTML);
-if (elStats) elStats.addEventListener('click', stat);
-if (elAccueil) elAccueil.addEventListener('click', acceuil);
-function acceuil() {
-    window.location.href = "../index.html";
-}
-function stat() {
-    window.location.href = "html/statistiques.html";
-}
 setInterval(function() {
-    var date = new Date();
-    document.getElementById('horloge').innerHTML = date.toLocaleString('fr-FR');
+    var el = document.getElementById('horloge');
+    if (el) {
+        var date = new Date();
+        el.innerHTML = date.toLocaleString('fr-FR');
+    }
 }, 1000);
 
 function AfficherPlanHTML() {

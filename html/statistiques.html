@@ -38,7 +38,7 @@
             <p>Statistiques de l'occupation et l'activité des capteurs.</p>
         </div>
         <div>
-            <button id="refreshbtn" class="boutton-action btn-vert" >
+            <button id="refreshbtn" class="bouton-action btn-vert" >
                 <h3 style="margin: 0;">Rafraîchir les données</h3>
             </button>
         </div>
@@ -78,6 +78,8 @@
     <script type="module">
         import { initTheme } from '../js/theme.js';
         initTheme();
+        var btn = document.getElementById('refreshbtn');
+        if (btn) btn.addEventListener('click', chargerStatistiques);
     </script> 
 </body>
 </html>

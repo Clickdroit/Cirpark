@@ -55,21 +55,9 @@ function creerChartEtat(totalNormale, totalInterdit, totalReserve, totalHandicap
 		data: {
 			labels: ["Normale", "Interdit", "Réservé", "Handicapé"],
 			datasets: [{
-				label: "Normale",
-				data: [totalNormale],
-				backgroundColor: "#2ecc71",
-			},{
-				label: "Interdit",
-				data: [totalInterdit],
-				backgroundColor: "#e74c3c"
-			},{
-				label: "Réservé",
-				data: [totalReserve],
-				backgroundColor: "#f1c40f"
-			},{
-				label: "Handicapé",
-				data: [totalHandicape],
-				backgroundColor: "#006eff"
+				label: "Nombre de places",
+				data: [totalNormale, totalInterdit, totalReserve, totalHandicape],
+				backgroundColor: ["#2ecc71", "#e74c3c", "#f1c40f", "#006eff"]
 			}]
 		},
 		options: {
@@ -98,10 +86,10 @@ function creerChartEvolution(heureOccupation, heureLibre) {
 			labels: ["0h", "2h", "4h", "6h", "8h", "10h", "12h", "14h", "16h", "18h", "20h", "22h"],
 			datasets:[{
 				label: "Occupation",
-				data: [heureOccupation],
+				data: heureOccupation,
 			}, {
 				label: "Libre",
-				data: [heureLibre],
+				data: heureLibre,
 			}]
 		},
 		options: {
@@ -178,7 +166,7 @@ function totalCapteur() {
 			var heureOccupation = new Array(12).fill(0);
 			var heureLibre = new Array(12).fill(0);
 			for (var i = 0; i < historique.length; i++) {
-				var date_heure = parseInt(historique[i].date_heure);
+				var date_heure = new Date(historique[i].date_heure).getHours();
 				if (historique[i].etat == "Occupee") {
 					heureOccupation[Math.floor(date_heure / 2)]++;
 				} else if (historique[i].etat == "Libre") {

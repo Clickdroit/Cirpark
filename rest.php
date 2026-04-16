@@ -2,7 +2,8 @@
 try {
     $maConnexion = new PDO("mysql:host=localhost;port=3306;dbname=cirpark", "root", "");
 } catch (PDOException $e) {
-    echo("ERREUR DB \r\n");
+    http_response_code(500);
+    echo json_encode(["erreur" => "Connexion BDD impossible"]);
     die();
 }
 $req_methode = $_SERVER['REQUEST_METHOD'];
@@ -26,7 +27,7 @@ if ($req_methode == 'GET') {
         echo json_encode($resultat);
     }
 
-    if (count($req_data) == 3 && $req_data[1] == 'capteur' && $req_data[2] == 'etat') {
+    elseif (count($req_data) == 3 && $req_data[1] == 'capteur' && $req_data[2] == 'etat') {
         $requete = "SELECT * FROM etat";
         $req_prep = $maConnexion->prepare($requete);
         $req_prep->execute();
@@ -34,7 +35,7 @@ if ($req_methode == 'GET') {
         echo json_encode($resultat);
     }
 
-    if (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'etat') {
+    elseif (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'etat') {
         $id = (int)$req_data[3];
         $requete = "SELECT * FROM etat WHERE id_capteur = :id ORDER BY date_heure DESC";
         $req_prep = $maConnexion->prepare($requete);
@@ -44,14 +45,14 @@ if ($req_methode == 'GET') {
         echo json_encode($resultat);
     }
 
-    if (count($req_data) == 3 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
+    elseif (count($req_data) == 3 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
         $requete = "SELECT * FROM configuration";
         $req_prep = $maConnexion->prepare($requete);
         $req_prep->execute();
         $resultat = $req_prep->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($resultat);
     }
-    if (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
+    elseif (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
         $id = (int)$req_data[3];
         $requete = "SELECT * FROM configuration WHERE id_capteur = :id";
         $req_prep = $maConnexion->prepare($requete);
@@ -71,6 +72,11 @@ if ($req_methode == 'POST') {
 
     // POST /capteur
     if (count($req_data) == 2 && $req_data[1] == 'capteur') {
+        if (!isset($donnees['nom'], $donnees['type'], $donnees['numero'], $donnees['description'])) {
+            http_response_code(400);
+            echo json_encode(["erreur" => "Champs requis : nom, type, numero, description"]);
+            die();
+        }
         $nom = $donnees['nom'];
         $type = $donnees['type'];
         $numero = $donnees['numero'];
@@ -85,11 +91,17 @@ if ($req_methode == 'POST') {
         $req_prep->execute();
         $req_prep->closeCursor();
 
+        http_response_code(201);
         echo json_encode(["message" => "Capteur ajouté"]);
     }
 
     // POST /capteur/etat
-    if (count($req_data) == 3 && $req_data[1] == 'capteur' && $req_data[2] == 'etat') {
+    elseif (count($req_data) == 3 && $req_data[1] == 'capteur' && $req_data[2] == 'etat') {
+        if (!isset($donnees['id_capteur'], $donnees['etat'])) {
+            http_response_code(400);
+            echo json_encode(["erreur" => "Champs requis : id_capteur, etat"]);
+            die();
+        }
         $id_capteur = $donnees['id_capteur'];
         $etat = $donnees['etat'];
 
@@ -100,11 +112,17 @@ if ($req_methode == 'POST') {
         $req_prep->execute();
         $req_prep->closeCursor();
 
+        http_response_code(201);
         echo json_encode(["message" => "Etat ajouté"]);
     }
 
     // POST /capteur/configuration
-    if (count($req_data) == 3 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
+    elseif (count($req_data) == 3 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
+        if (!isset($donnees['id_capteur'], $donnees['hauteur'], $donnees['eclairage'])) {
+            http_response_code(400);
+            echo json_encode(["erreur" => "Champs requis : id_capteur, hauteur, eclairage"]);
+            die();
+        }
         $id_capteur = $donnees['id_capteur'];
         $hauteur = $donnees['hauteur'];
         $eclairage = $donnees['eclairage'];
@@ -117,6 +135,7 @@ if ($req_methode == 'POST') {
         $req_prep->execute();
         $req_prep->closeCursor();
 
+        http_response_code(201);
         echo json_encode(["message" => "Configuration ajoutée"]);
     }
 }
@@ -129,6 +148,11 @@ if ($req_methode == 'PUT') {
 
     // PUT /capteur/etat/{id}
     if (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'etat') {
+        if (!isset($donnees['etat'])) {
+            http_response_code(400);
+            echo json_encode(["erreur" => "Champ requis : etat"]);
+            die();
+        }
         $id = (int)$req_data[3];
         $etat = $donnees['etat'];
 
@@ -143,7 +167,12 @@ if ($req_methode == 'PUT') {
     }
 
     // PUT /capteur/configuration/{id}
-    if (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
+    elseif (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
+        if (!isset($donnees['hauteur'], $donnees['eclairage'])) {
+            http_response_code(400);
+            echo json_encode(["erreur" => "Champs requis : hauteur, eclairage"]);
+            die();
+        }
         $id = (int)$req_data[3];
         $hauteur = $donnees['hauteur'];
         $eclairage = $donnees['eclairage'];
@@ -178,7 +207,7 @@ if ($req_methode == 'DELETE') {
     }
 
     // DELETE /capteur/configuration/{id}
-    if (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
+    elseif (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
         $id = (int)$req_data[3];
 
         $requete = "DELETE FROM configuration WHERE id_capteur = :id";

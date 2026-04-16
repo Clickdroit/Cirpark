@@ -17,7 +17,7 @@ CREATE TABLE configuration(
     id_capteur INT,
     mode VARCHAR(20),
     hauteur INT,
-    eclaireage VARCHAR(20),
+    eclairage VARCHAR(20),
     detection VARCHAR(20),
     version VARCHAR(20),
     FOREIGN KEY (id_capteur) REFERENCES capteur(id)

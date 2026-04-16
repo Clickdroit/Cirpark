@@ -33,10 +33,12 @@ while(true){
         if($etat=="00") {
             $etatt = "Libre";
             echo "La place est libre ! \r\n";
-        }
-        if($etat=="01") {
+        } elseif($etat=="01") {
             $etatt = "Occupee";
             echo "La place est occupée ! \r\n";
+        } else {
+            $etatt = "Inconnu";
+            echo "Etat inconnu : " . $etat . " \r\n";
         }
         $req_insert = "INSERT INTO etat (etat, date_heure, id_capteur) VALUES (?, NOW(), ?)";
         $req_prep_insert = $pdo->prepare($req_insert);
