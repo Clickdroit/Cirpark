@@ -24,6 +24,7 @@
 - [ ] Auto-refresh du dashboard *(rafraîchissement automatique des données toutes les X secondes)*
 - [ ] Faire fonctionner les liens de navigation *(Historique, Documentation, Équipe pointent vers # actuellement)*
 - [ ] Améliorer la dynamique du C++ 
+- [ ] Création du Formulaire de sécuriter
 
 ### 🟡 Priorité basse
 - [ ] Faire une documentation *(architecture, routes API, protocole UDP, schéma BDD)*
