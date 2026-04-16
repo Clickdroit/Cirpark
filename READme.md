@@ -19,17 +19,17 @@
 
 ### 🟠 Priorité moyenne
 - [ ] Améliorée l'esthétique de l'interface *(Google Fonts, animations, icônes)*
-- [-] Créer une meilleure étendu des capteurs + statistiques (Maxime)
-- [-] Ajouter des graphiques *(Chart.js : taux d'occupation, camembert libre/occupé, heures de pointe)* (Maxime)
-- [ ] Auto-refresh du dashboard *(rafraîchissement automatique des données toutes les X secondes)*
+- [~] Créer une meilleure étendu des capteurs + statistiques (Maxime)
+- [~] Ajouter des graphiques *(Chart.js : taux d'occupation, camembert libre/occupé, heures de pointe)* (Maxime)
+- [~] Auto-refresh du dashboard *(rafraîchissement automatique des données toutes les X secondes)*
 - [ ] Faire fonctionner les liens de navigation *(Historique, Documentation, Équipe pointent vers # actuellement)*
 - [ ] Améliorer la dynamique du C++ 
-- [ ] Création du Formulaire de sécuriter
+- [-] Création du Formulaire de sécuriter
 
 ### 🟡 Priorité basse
 - [ ] Faire une documentation *(architecture, routes API, protocole UDP, schéma BDD)*
 - [ ] Faire la page équipe *(photos/avatars, rôles, répartition des tâches)*
-- [ ] Améliorer le responsive mobile *(adaptation pour tablettes et téléphones)*
+- [-] Améliorer le responsive mobile *(adaptation pour tablettes et téléphones)*
 - [ ] Ajouter des headers CORS et Content-Type dans l'API REST
 - [ ] Ajouter de la validation des données dans POST/PUT *(vérifier que les champs existent avant utilisation)*
 
