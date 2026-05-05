@@ -20,7 +20,7 @@
 ### 🟠 Priorité moyenne
 - [ ] Améliorée l'esthétique de l'interface *(Google Fonts, animations, icônes)*
 - [~] Créer une meilleure étendu des capteurs + statistiques (Maxime)
-- [~] Ajouter des graphiques *(Chart.js : taux d'occupation, camembert libre/occupé, heures de pointe)* (Maxime)
+- [x] Ajouter des graphiques *(Chart.js : taux d'occupation, camembert libre/occupé, heures de pointe)* (Maxime)
 - [~] Auto-refresh du dashboard *(rafraîchissement automatique des données toutes les X secondes)*
 - [ ] Faire fonctionner les liens de navigation *(Historique, Documentation, Équipe pointent vers # actuellement)*
 - [ ] Améliorer la dynamique du C++ 

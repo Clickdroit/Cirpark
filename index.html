@@ -52,6 +52,23 @@
             </button>
         </div>
 
+        <!-- Contrôle Auto-Refresh -->
+        <div style="margin: 20px 0; padding: 15px; background: rgba(26, 188, 156, 0.15); border-radius: 8px; text-align: center;">
+            <label for="autoRefreshToggle" style="font-weight: bold; margin-right: 15px;">
+                <input type="checkbox" id="autoRefreshToggle" style="margin-right: 8px;"> Auto-refresh
+            </label>
+            <label for="refreshInterval" style="font-weight: bold;">
+                Intervalle (secondes):
+                <select id="refreshInterval" style="margin-left: 8px; padding: 5px 10px;">
+                    <option value="3000">3</option>
+                    <option value="5000" selected>5</option>
+                    <option value="10000">10</option>
+                    <option value="15000">15</option>
+                    <option value="30000">30</option>
+                </select>
+            </label>
+        </div>
+
         <!-- Section où l'AJAX va afficher les tableaux ou plans -->
         <section id="section">
             <p class="texte-attente">Cliquez sur un des boutons ci-dessus pour charger les données.</p>

@@ -19,7 +19,7 @@ while(true){
         $adrl=$capteur[1];
         $codeFonction="10";
         $bcc=dechex(hexdec($adrh)+hexdec($adrl)+hexdec($codeFonction));
-        $ipServeur = "172.18.112.123";
+        $ipServeur = "172.18.112.249";
         $port = "10001";
         $message=hex2bin($adrh.$adrl.$codeFonction.$bcc);
         echo "message envoyé : ".$adrh.$adrl.$codeFonction.$bcc."\r\n";

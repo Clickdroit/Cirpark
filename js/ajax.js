@@ -12,6 +12,78 @@ setInterval(function() {
     }
 }, 1000);
 
+// Variables d'auto-refresh
+var autoRefreshEnabled = false;
+var autoRefreshInterval = 5000; // 5 secondes par défaut
+var planRefreshId = null;
+var capteurRefreshId = null;
+
+// Fonction pour activer l'auto-refresh
+function enableAutoRefresh(interval) {
+    autoRefreshEnabled = true;
+    if (interval) autoRefreshInterval = interval;
+    restartAutoRefresh();
+}
+
+// Fonction pour redémarrer l'auto-refresh en fonction du contenu visible
+function restartAutoRefresh() {
+    // Arrêter les intervalles existants
+    if (planRefreshId) clearInterval(planRefreshId);
+    if (capteurRefreshId) clearInterval(capteurRefreshId);
+    planRefreshId = null;
+    capteurRefreshId = null;
+    
+    if (!autoRefreshEnabled) return;
+    
+    // Auto-refresh du plan si visible
+    if (document.getElementById('parking')) {
+        planRefreshId = setInterval(function() {
+            AfficherPlanHTML();
+        }, autoRefreshInterval);
+    }
+    
+    // Auto-refresh de la liste si visible
+    if (document.querySelectorAll('.capteur-table').length > 0) {
+        capteurRefreshId = setInterval(function() {
+            AfficherListeHTML();
+        }, autoRefreshInterval);
+    }
+}
+
+// Fonction pour désactiver l'auto-refresh
+function disableAutoRefresh() {
+    autoRefreshEnabled = false;
+    if (planRefreshId) clearInterval(planRefreshId);
+    if (capteurRefreshId) clearInterval(capteurRefreshId);
+    planRefreshId = null;
+    capteurRefreshId = null;
+}
+
+// Event listeners pour les contrôles d'auto-refresh (si sur la page d'accueil)
+document.addEventListener('DOMContentLoaded', function() {
+    var autoRefreshToggle = document.getElementById('autoRefreshToggle');
+    var refreshInterval = document.getElementById('refreshInterval');
+    
+    if (autoRefreshToggle) {
+        autoRefreshToggle.addEventListener('change', function() {
+            if (this.checked) {
+                enableAutoRefresh(parseInt(refreshInterval.value));
+            } else {
+                disableAutoRefresh();
+            }
+        });
+    }
+    
+    if (refreshInterval) {
+        refreshInterval.addEventListener('change', function() {
+            if (autoRefreshToggle && autoRefreshToggle.checked) {
+                autoRefreshInterval = parseInt(this.value);
+                restartAutoRefresh();
+            }
+        });
+    }
+});
+
 function AfficherPlanHTML() {
     var xhttp = new XMLHttpRequest();
 
@@ -69,6 +141,7 @@ function AfficherPlanHTML() {
             html += "</div>";
             
             section.innerHTML = html;
+            restartAutoRefresh();
         }
     };
 
@@ -109,6 +182,7 @@ function AfficherListeHTML() {
             }
             html += "</table></div>";
             section.innerHTML = html;
+            restartAutoRefresh();
         }
     };
 

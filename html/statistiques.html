@@ -37,11 +37,30 @@
             <h2>Statistiques</h2>
             <p>Statistiques de l'occupation et l'activité des capteurs.</p>
         </div>
-        <div>
-            <button id="refreshbtn" class="bouton-action btn-vert" >
-                <h3 style="margin: 0;">Rafraîchir les données</h3>
+        
+        <!-- Contrôles de Rafraîchissement -->
+        <div style="display: flex; gap: 20px; margin: 20px 0; padding: 15px; background: rgba(26, 188, 156, 0.15); border-radius: 8px; align-items: center; flex-wrap: wrap;">
+            <button id="refreshbtn" class="bouton-action btn-vert" style="margin: 0; flex-shrink: 0;">
+                <h3 style="margin: 0; font-size: 14px;">↻ Rafraîchir</h3>
             </button>
+            
+            <div style="flex: 1; min-width: 300px;">
+                <label for="chartAutoRefreshToggle" style="font-weight: bold; margin-right: 15px; display: inline-block;">
+                    <input type="checkbox" id="chartAutoRefreshToggle" style="margin-right: 8px;"> Auto-refresh
+                </label>
+                <label for="chartRefreshInterval" style="font-weight: bold; display: inline-block;">
+                    Intervalle (secondes):
+                    <select id="chartRefreshInterval" style="margin-left: 8px; padding: 5px 10px;">
+                        <option value="3000">3</option>
+                        <option value="5000" selected>5</option>
+                        <option value="10000">10</option>
+                        <option value="15000">15</option>
+                        <option value="30000">30</option>
+                    </select>
+                </label>
+            </div>
         </div>
+        
         <section id="section">
             <div class="stats-grid">
                 <div class="stats-card">
@@ -80,6 +99,29 @@
         initTheme();
         var btn = document.getElementById('refreshbtn');
         if (btn) btn.addEventListener('click', chargerStatistiques);
+        
+        // Event listeners pour l'auto-refresh des statistiques
+        var chartAutoRefreshToggle = document.getElementById('chartAutoRefreshToggle');
+        var chartRefreshInterval = document.getElementById('chartRefreshInterval');
+        
+        if (chartAutoRefreshToggle) {
+            chartAutoRefreshToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    enableChartAutoRefresh(parseInt(chartRefreshInterval.value));
+                } else {
+                    disableChartAutoRefresh();
+                }
+            });
+        }
+        
+        if (chartRefreshInterval) {
+            chartRefreshInterval.addEventListener('change', function() {
+                if (chartAutoRefreshToggle && chartAutoRefreshToggle.checked) {
+                    disableChartAutoRefresh();
+                    enableChartAutoRefresh(parseInt(this.value));
+                }
+            });
+        }
     </script> 
 </body>
 </html>

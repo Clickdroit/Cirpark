@@ -57,15 +57,25 @@ function creerChartEtat(totalNormale, totalInterdit, totalReserve, totalHandicap
 			datasets: [{
 				label: "Nombre de places",
 				data: [totalNormale, totalInterdit, totalReserve, totalHandicape],
-				backgroundColor: ["#2ecc71", "#e74c3c", "#f1c40f", "#006eff"]
+				backgroundColor: ["#2ecc71", "#e74c3c", "#f1c40f", "#006eff"],
+				borderColor: ["#1e8f4f", "#c0392b", "#d4a017", "#004ecb"],
+				borderWidth: 1
 			}]
 		},
+		
 		options: {
 			responsive: true,
 			maintainAspectRatio: false,
 			scales: {
+				x: {
+					// Réduire la largeur des barres et éviter qu'elles soient collées
+					categoryPercentage: 0.6,
+					barPercentage: 0.8,
+					maxBarThickness: 60,
+					ticks: { autoSkip: false }
+				},
 				y: {
-					beginAtZero: true,
+					beginAtZero: true
 				}
 			},
 			plugins: {
@@ -83,7 +93,7 @@ function creerChartEvolution(heureOccupation, heureLibre) {
 		type: "line",
 		data:{
 
-			labels: ["0h", "2h", "4h", "6h", "8h", "10h", "12h", "14h", "16h", "18h", "20h", "22h"],
+			labels: ["0h", "2h", "4h", "6h", "8h", "10h", "12h", "14h", "16h", "18h", "20h", "22h"], //Je veux que ça fasse une belle courbe avec toutes les heures selon la date, date_heure ? 
 			datasets:[{
 				label: "Occupation",
 				data: heureOccupation,
@@ -166,12 +176,21 @@ function totalCapteur() {
 			var heureOccupation = new Array(12).fill(0);
 			var heureLibre = new Array(12).fill(0);
 			for (var i = 0; i < historique.length; i++) {
-				var date_heure = new Date(historique[i].date_heure).getHours();
-				if (historique[i].etat == "Occupee") {
-					heureOccupation[Math.floor(date_heure / 2)]++;
-				} else if (historique[i].etat == "Libre") {
-					heureLibre[Math.floor(date_heure / 2)]++;
-				}
+					// Normaliser le format de date pour compatibilité (ex: 'YYYY-MM-DD HH:MM:SS' -> 'YYYY-MM-DDTHH:MM:SS')
+					var rawDate = historique[i].date_heure;
+					var parsedDate = null;
+					if (typeof rawDate === 'string' && rawDate.indexOf(' ') !== -1) {
+						parsedDate = new Date(rawDate.replace(' ', 'T'));
+					} else {
+						parsedDate = new Date(rawDate);
+					}
+					var date_heure = parsedDate && !isNaN(parsedDate) ? parsedDate.getHours() : (new Date()).getHours();
+					var bucket = Math.floor(date_heure / 2);
+					if (historique[i].etat == "Occupee") {
+						heureOccupation[bucket]++;
+					} else if (historique[i].etat == "Libre") {
+						heureLibre[bucket]++;
+					}
 			}
 			creerChartEvolution(heureOccupation, heureLibre);
 		}
@@ -179,10 +198,37 @@ function totalCapteur() {
 	xhttp3.open("GET", "../rest.php/capteur/etat");
 	xhttp3.send();
 }
+// Variables pour l'auto-refresh des graphiques
+var chartAutoRefreshEnabled = false;
+var chartAutoRefreshInterval = 5000; // 5 secondes par défaut
+var chartRefreshId = null;
+
 function chargerStatistiques() {
 	if (initCharts()) {
 		totalCapteur();
 	}
+}
+
+// Fonction pour activer l'auto-refresh des statistiques
+function enableChartAutoRefresh(interval) {
+	chartAutoRefreshEnabled = true;
+	if (interval) chartAutoRefreshInterval = interval;
+	
+	// Charger une première fois
+	chargerStatistiques();
+	
+	// Puis lancer l'auto-refresh
+	if (chartRefreshId) clearInterval(chartRefreshId);
+	chartRefreshId = setInterval(function() {
+		chargerStatistiques();
+	}, chartAutoRefreshInterval);
+}
+
+// Fonction pour désactiver l'auto-refresh des statistiques
+function disableChartAutoRefresh() {
+	chartAutoRefreshEnabled = false;
+	if (chartRefreshId) clearInterval(chartRefreshId);
+	chartRefreshId = null;
 }
 
 chargerStatistiques();
