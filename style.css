@@ -225,6 +225,11 @@ tr:hover {
     background-color: rgba(0, 0, 0, 0.06);
 }
 
+.historique-empty {
+    margin-top: 10px;
+    color: #666666;
+}
+
 .vert {
     color: var(--green-color);
     font-weight: bold;
@@ -520,6 +525,51 @@ footer {
 }
 
 /* =========== STATISTIQUES =========== */
+
+.stats-refresh {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(26, 188, 156, 0.15);
+    border-radius: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.stats-refresh__button {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.stats-refresh__title {
+    margin: 0;
+    font-size: 14px;
+}
+
+.stats-refresh__controls {
+    flex: 1;
+    min-width: 300px;
+}
+
+.stats-refresh__label {
+    font-weight: bold;
+    margin-right: 15px;
+    display: inline-block;
+}
+
+.stats-refresh__label:last-child {
+    margin-right: 0;
+}
+
+.stats-refresh__checkbox {
+    margin-right: 8px;
+}
+
+.stats-refresh__select {
+    margin-left: 8px;
+    padding: 5px 10px;
+}
 
 .stats-grid {
     display: grid;

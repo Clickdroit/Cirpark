@@ -15,7 +15,7 @@
 - [x] Compléter le rest.php 
 - [x] Réparer le cirpark_client_udp.php 
 - [x] Ajouter des fonctions PUT/DELETE/POST dans le php *(En priorité)*
-- [-] Lorsque l'on clique sur un capteur, il faut afficher les infos du capteur et pouvoir modifier les infos du capteur *(Dès que PUT/DELETE/POST est fait)*
+- [x] Lorsque l'on clique sur un capteur, il faut afficher les infos du capteur et pouvoir modifier les infos du capteur *(Dès que PUT/DELETE/POST est fait)*
 
 ### 🟠 Priorité moyenne
 - [ ] Améliorée l'esthétique de l'interface *(Google Fonts, animations, icônes)*
