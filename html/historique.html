@@ -6,6 +6,47 @@
     <title>Document</title>
 </head>
 <body>
+    <header id="index-header">
+        <div id="horloge">--/--/---- --:--:--</div>
+        
+        <div class="logo-container">
+            <h1>Projet Cirpark</h1>
+            <p>Gestion de parking intelligent</p>
+        </div>
+        <button id="theme-toggle"></button>
+        
+        <!-- Menu de navigation -->
+        <nav>
+            <ul>
+                <li><a href="../index.html" class="active">Accueil</a></li>
+                <li><a href="../html/statistiques.html">Statistiques</a></li>
+                <li><a href="../html/historique.html">Historique</a></li>
+                <li><a href="../html/documentation.html">Documentation</a></li>
+                <li><a href="../html/equipe.html">Équipe</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="description-projet">
+            <h2>Historique</h2>
+            <p>Historique des mouvements et des événements du parking.</p>
+        </div>
+    </main>
+    <section>
+        <div class="historique-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date et Heure</th>
+                        <th>Capteur</th>
+                        <th>Événement</th>
+                    </tr>
+                </thead>
+                <tbody id="historiqueTableBody">
+                </tbody>
+            </table>
+        </div>
+    </section>
     
 </body>
 </html>
