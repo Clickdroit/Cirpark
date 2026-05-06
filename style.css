@@ -235,6 +235,104 @@ tr:hover {
     font-weight: bold;
 }
 
+/* =========== FICHE CAPTEUR =========== */
+
+.capteur-details {
+    margin-top: 15px;
+}
+
+.capteur-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+}
+
+.capteur-card {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+}
+
+.capteur-card h4 {
+    margin-bottom: 12px;
+    font-size: 15px;
+}
+
+.capteur-form {
+    display: grid;
+    gap: 10px;
+}
+
+.capteur-form label {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.capteur-form input,
+.capteur-form select,
+.capteur-form textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+}
+
+.capteur-meta {
+    font-size: 12px;
+    color: var(--gray-color);
+    margin-top: 6px;
+}
+
+.form-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    background-color: var(--secondary-color);
+    color: var(--white-color);
+    border: 1px solid var(--secondary-color);
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-action:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-danger {
+    background-color: var(--red-color);
+    color: var(--white-color);
+    border: 1px solid var(--red-color);
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
 /* =========== PLAN DU PARKING =========== */
 
 #parking {
@@ -484,4 +582,36 @@ footer {
         flex-direction: column;
         text-align: center;
     }
+}
+#refresh{
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(26, 188, 156, 0.15);
+    border-radius: 8px;
+    text-align: center;
+}
+.refreshtoggle{
+    font-weight: bold;
+    margin-right: 15px;
+}
+.autoRefreshToggle{
+    margin-right: 8px;
+}
+.refreshIntervalLabel{
+    font-weight: bold;
+}
+.refreshInterval{
+    margin-left: 8px;
+    padding: 5px 10px;
+}
+.horloge{
+    position:absolute;
+    top:20px;
+    left:20px;
+    font-weight:bold;
+    color:#1abc9c;
+    font-size:18px;
+}
+.index-header{
+    position:relative;
 }

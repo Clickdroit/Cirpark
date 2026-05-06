@@ -9,8 +9,8 @@
 <body>
 
     <!-- En-tête du site -->
-    <header style="position:relative;">
-        <div id="horloge" style="position:absolute; top:20px; left:20px; font-weight:bold; color:#1abc9c; font-size:18px;">--/--/---- --:--:--</div>
+    <header id="index-header">
+        <div id="horloge">--/--/---- --:--:--</div>
         
         <div class="logo-container">
             <h1>Projet Cirpark</h1>
@@ -23,9 +23,9 @@
             <ul>
                 <li><a href="index.html" class="active">Accueil</a></li>
                 <li><a href="html/statistiques.html">Statistiques</a></li>
-                <li><a href="#">Historique</a></li>
-                <li><a href="#">Documentation</a></li>
-                <li><a href="#">Équipe</a></li>
+                <li><a href="html/historique.html">Historique</a></li>
+                <li><a href="html/documentation.html">Documentation</a></li>
+                <li><a href="html/equipe.html">Équipe</a></li>
             </ul>
         </nav>
     </header>
@@ -53,13 +53,13 @@
         </div>
 
         <!-- Contrôle Auto-Refresh -->
-        <div style="margin: 20px 0; padding: 15px; background: rgba(26, 188, 156, 0.15); border-radius: 8px; text-align: center;">
-            <label for="autoRefreshToggle" style="font-weight: bold; margin-right: 15px;">
-                <input type="checkbox" id="autoRefreshToggle" style="margin-right: 8px;"> Auto-refresh
+        <div class="refresh">
+            <label for="autoRefreshToggle" id="refreshtoggle">
+                <input type="checkbox" id="autoRefreshToggle"> Auto-refresh
             </label>
-            <label for="refreshInterval" style="font-weight: bold;">
+            <label for="refreshInterval" id="refreshIntervalLabel">
                 Intervalle (secondes):
-                <select id="refreshInterval" style="margin-left: 8px; padding: 5px 10px;">
+                <select id="refreshInterval">
                     <option value="3000">3</option>
                     <option value="5000" selected>5</option>
                     <option value="10000">10</option>

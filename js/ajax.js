@@ -59,6 +59,36 @@ function disableAutoRefresh() {
     capteurRefreshId = null;
 }
 
+function escapeHtml(valeur) {
+    if (valeur === null || valeur === undefined) return "";
+    return String(valeur)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function envoyerRequeteJSON(methode, url, donnees, callbackSucces) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            if (this.status >= 200 && this.status < 300) {
+                if (callbackSucces) callbackSucces(this.responseText);
+            } else {
+                alert("Erreur lors de la requête (" + this.status + ")");
+            }
+        }
+    };
+    xhttp.open(methode, url);
+    if (donnees) {
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.send(JSON.stringify(donnees));
+    } else {
+        xhttp.send();
+    }
+}
+
 // Event listeners pour les contrôles d'auto-refresh (si sur la page d'accueil)
 document.addEventListener('DOMContentLoaded', function() {
     var autoRefreshToggle = document.getElementById('autoRefreshToggle');
@@ -121,7 +151,7 @@ function AfficherPlanHTML() {
                         var contenuPlace = estLibre ? "" : "<img src='plan/voiture" + numVoiture + ".png' class='voiture-img' alt='Voiture'>";
                         // Texte qui s'affiche au survol de la souris
                         var texte = "Capteur " + capteur.nom + " | " + capteur.etat + " depuis le " + capteur.date_heure;
-                        html += "<div class='" + couleur + "' data-info='" + texte + "'>" + contenuPlace + "</div>";
+                        html += "<div class='" + couleur + "' data-info='" + texte + "' onclick='AfficherDetailsCapteur(" + capteur.id + ")' title='Voir la fiche'>" + contenuPlace + "</div>";
                     } else {
                         html += "<div class='place'></div>";
                     }
@@ -160,7 +190,7 @@ function AfficherListeHTML() {
             var section = document.getElementById("section");
 
             // Creation du tableau HTML
-            var html = "<h3>Liste des Capteurs (Cliquez sur un capteur pour voir son historique)</h3>";
+            var html = "<h3>Liste des Capteurs (Cliquez sur un capteur pour voir sa fiche)</h3>";
             html += "<div class='capteur-table'>";
             html += "<table>";
             html += "<tr><th>Nom</th><th>Type</th><th>Numéro</th><th>Etat</th><th>Hauteur</th><th>Éclairage</th></tr>";
@@ -170,8 +200,8 @@ function AfficherListeHTML() {
                 var capteur = donnees[i];
                 // On choisit la couleur selon l'etat
                 var couleur = (capteur.etat == "Libre") ? "vert" : "rouge";
-                // Quand on clique sur la ligne ca ouvre l'historique
-                html += "<tr onclick='AfficherHistoriqueCapteur(" + capteur.id + ")' style='cursor:pointer;' title='Voir Historique'>";
+                // Quand on clique sur la ligne ca ouvre la fiche
+                html += "<tr onclick='AfficherDetailsCapteur(" + capteur.id + ")' style='cursor:pointer;' title='Voir la fiche'>";
                 html += "<td>" + capteur.nom + "</td>";
                 html += "<td>" + capteur.type + "</td>";
                 html += "<td>" + capteur.numero + "</td>";
@@ -190,6 +220,158 @@ function AfficherListeHTML() {
     xhttp.send();
 }
 
+function AfficherDetailsCapteur(idCapteur) {
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                var donnees = JSON.parse(this.responseText);
+                var capteur = Array.isArray(donnees) ? donnees[0] : donnees;
+                var section = document.getElementById("section");
+
+                if (!capteur) {
+                    section.innerHTML = "<p class='texte-attente'>Capteur introuvable.</p>";
+                    return;
+                }
+
+                var nom = escapeHtml(capteur.nom);
+                var type = escapeHtml(capteur.type);
+                var numero = escapeHtml(capteur.numero);
+                var description = escapeHtml(capteur.description);
+                var hauteur = escapeHtml(capteur.hauteur);
+                var eclairage = escapeHtml(capteur.eclairage);
+                var etat = escapeHtml(capteur.etat || "Inconnu");
+                var dateHeure = escapeHtml(capteur.date_heure || "-");
+
+                var html = "<div class='btn-group'>";
+                html += "<button class='btn-gris' onclick='AfficherListeHTML()'>⬅ Retour aux Capteurs</button>";
+                html += "<button class='btn-gris' onclick='AfficherHistoriqueCapteur(" + idCapteur + ")'>Historique</button>";
+                html += "</div>";
+                html += "<h3>Fiche du Capteur N°" + idCapteur + "</h3>";
+                html += "<div class='capteur-details'>";
+                html += "<div class='capteur-grid'>";
+
+                html += "<div class='capteur-card'>";
+                html += "<h4>Informations</h4>";
+                html += "<div class='capteur-form'>";
+                html += "<label for='capteur-nom'>Nom</label>";
+                html += "<input id='capteur-nom' type='text' value='" + nom + "'>";
+                html += "<label for='capteur-type'>Type</label>";
+                html += "<input id='capteur-type' type='text' value='" + type + "'>";
+                html += "<label for='capteur-numero'>Numéro</label>";
+                html += "<input id='capteur-numero' type='text' value='" + numero + "'>";
+                html += "<label for='capteur-description'>Description</label>";
+                html += "<textarea id='capteur-description' rows='3'>" + description + "</textarea>";
+                html += "</div>";
+                html += "<div class='form-actions'>";
+                html += "<button class='btn-action' onclick='EnregistrerCapteur(" + idCapteur + ")'>Enregistrer</button>";
+                html += "</div>";
+                html += "</div>";
+
+                html += "<div class='capteur-card'>";
+                html += "<h4>Configuration</h4>";
+                html += "<div class='capteur-form'>";
+                html += "<label for='capteur-hauteur'>Hauteur</label>";
+                html += "<input id='capteur-hauteur' type='number' value='" + hauteur + "'>";
+                html += "<label for='capteur-eclairage'>Éclairage</label>";
+                html += "<input id='capteur-eclairage' type='text' value='" + eclairage + "'>";
+                html += "</div>";
+                html += "<div class='form-actions'>";
+                html += "<button class='btn-action' onclick='EnregistrerConfiguration(" + idCapteur + ")'>Enregistrer</button>";
+                html += "</div>";
+                html += "</div>";
+
+                html += "<div class='capteur-card'>";
+                html += "<h4>État</h4>";
+                html += "<div class='capteur-form'>";
+                html += "<label for='capteur-etat'>État actuel</label>";
+                html += "<select id='capteur-etat'>";
+                html += "<option value='Libre'" + (etat === "Libre" ? " selected" : "") + ">Libre</option>";
+                html += "<option value='Occupee'" + (etat === "Occupee" ? " selected" : "") + ">Occupée</option>";
+                if (etat !== "Libre" && etat !== "Occupee") {
+                    html += "<option value='" + etat + "' selected>" + etat + "</option>";
+                }
+                html += "</select>";
+                html += "<div class='capteur-meta'>Dernière mise à jour : " + dateHeure + "</div>";
+                html += "</div>";
+                html += "<div class='form-actions'>";
+                html += "<button class='btn-action' onclick='MettreAJourEtat(" + idCapteur + ")'>Mettre à jour</button>";
+                html += "<button class='btn-danger' onclick='SupprimerCapteur(" + idCapteur + ")'>Supprimer</button>";
+                html += "</div>";
+                html += "</div>";
+
+                html += "</div>";
+                html += "</div>";
+
+                section.innerHTML = html;
+                restartAutoRefresh();
+            } else {
+                alert("Erreur lors du chargement du capteur (" + this.status + ")");
+            }
+        }
+    };
+
+    xhttp.open("GET", "rest.php/capteur/" + idCapteur);
+    xhttp.send();
+}
+
+function EnregistrerCapteur(idCapteur) {
+    var nom = document.getElementById("capteur-nom").value.trim();
+    var type = document.getElementById("capteur-type").value.trim();
+    var numero = document.getElementById("capteur-numero").value.trim();
+    var description = document.getElementById("capteur-description").value.trim();
+
+    if (!nom || !type || !numero) {
+        alert("Veuillez renseigner le nom, le type et le numéro.");
+        return;
+    }
+
+    envoyerRequeteJSON("PUT", "rest.php/capteur/" + idCapteur, {
+        nom: nom,
+        type: type,
+        numero: numero,
+        description: description
+    }, function() {
+        AfficherDetailsCapteur(idCapteur);
+    });
+}
+
+function EnregistrerConfiguration(idCapteur) {
+    var hauteur = document.getElementById("capteur-hauteur").value.trim();
+    var eclairage = document.getElementById("capteur-eclairage").value.trim();
+
+    if (!hauteur || !eclairage) {
+        alert("Veuillez renseigner la hauteur et l'éclairage.");
+        return;
+    }
+
+    envoyerRequeteJSON("PUT", "rest.php/capteur/configuration/" + idCapteur, {
+        hauteur: hauteur,
+        eclairage: eclairage
+    }, function() {
+        AfficherDetailsCapteur(idCapteur);
+    });
+}
+
+function MettreAJourEtat(idCapteur) {
+    var etat = document.getElementById("capteur-etat").value;
+    envoyerRequeteJSON("PUT", "rest.php/capteur/etat/" + idCapteur, {
+        etat: etat
+    }, function() {
+        AfficherDetailsCapteur(idCapteur);
+    });
+}
+
+function SupprimerCapteur(idCapteur) {
+    if (!confirm("Supprimer ce capteur et ses données associées ?")) {
+        return;
+    }
+    envoyerRequeteJSON("DELETE", "rest.php/capteur/" + idCapteur, null, function() {
+        AfficherListeHTML();
+    });
+}
+
 // Cette fonction affiche l'historique d'un seul capteur
 function AfficherHistoriqueCapteur(idCapteur) {
     var xhttp = new XMLHttpRequest();
@@ -199,8 +381,11 @@ function AfficherHistoriqueCapteur(idCapteur) {
             var donnees = JSON.parse(this.responseText);
             var section = document.getElementById("section");
 
-            // Bouton retour pour revenir a la liste
-            var html = "<button class='btn-gris' onclick='AfficherListeHTML()'>⬅ Retour aux Capteurs</button>";
+            // Boutons de retour
+            var html = "<div class='btn-group'>";
+            html += "<button class='btn-gris' onclick='AfficherDetailsCapteur(" + idCapteur + ")'>⬅ Retour au Capteur</button>";
+            html += "<button class='btn-gris' onclick='AfficherListeHTML()'>Retour aux Capteurs</button>";
+            html += "</div>";
             html += "<h3>Historique du Capteur N°" + idCapteur + "</h3>";
             html += "<table>";
             html += "<tr><th>Date et Heure</th><th>Etat</th></tr>";
@@ -218,6 +403,7 @@ function AfficherHistoriqueCapteur(idCapteur) {
 
             html += "</table>";
             section.innerHTML = html;
+            restartAutoRefresh();
         }
     };
 
