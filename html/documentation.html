@@ -1,11 +1,608 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Documentation - Cirpark</title>
+    <link rel="stylesheet" href="../style.css">
+    <meta name="description" content="Documentation du projet Cirpark : architecture, API REST, protocole UDP, schéma BDD.">
 </head>
 <body>
-    
+    <header id="index-header" class="index-header">
+        <div id="horloge" class="horloge">--/--/---- --:--:--</div>
+        <div class="logo-container">
+            <h1>Projet Cirpark</h1>
+            <p>Gestion de parking intelligent</p>
+        </div>
+        <button id="theme-toggle"></button>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Accueil</a></li>
+                <li><a href="statistiques.html">Statistiques</a></li>
+                <li><a href="historique.html">Historique</a></li>
+                <li><a href="documentation.html" class="active">Documentation</a></li>
+                <li><a href="equipe.html">Équipe</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="description-projet">
+            <h2>📚 Documentation Cirpark</h2>
+            <p>Documentation complète du système de gestion de parking intelligent</p>
+        </div>
+
+        <!-- Table des matières -->
+        <section class="doc-section">
+            <h3>📋 Table des matières</h3>
+            <ul>
+                <li><a href="#architecture">Architecture générale</a></li>
+                <li><a href="#api-rest">API REST - Routes</a></li>
+                <li><a href="#protocole-udp">Protocole UDP - Capteurs</a></li>
+                <li><a href="#schema-bdd">Schéma Base de Données</a></li>
+            </ul>
+        </section>
+
+        <!-- ARCHITECTURE -->
+        <section class="doc-section" id="architecture">
+            <h3>🏗️ Architecture générale</h3>
+            
+            <h4>Vue d'ensemble</h4>
+            <p>Cirpark est un système de gestion de parking intelligent composé de trois couches :</p>
+            
+            <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                <pre><code>
+┌─────────────────────────────────────┐
+│      INTERFACE WEB (Frontend)       │
+│  - HTML/CSS/JavaScript              │
+│  - Dashboard temps réel             │
+│  - Statistiques & Historique        │
+└──────────────┬──────────────────────┘
+               │ HTTP/AJAX
+┌──────────────▼──────────────────────┐
+│      API REST (Backend PHP)         │
+│  - rest.php                         │
+│  - CRUD Capteurs/États/Config       │
+│  - Gestion des requêtes             │
+└──────────────┬──────────────────────┘
+               │
+      ┌────────┴────────┐
+      │                 │
+      ▼                 ▼
+  ┌─────────────┐  ┌──────────────┐
+  │  MySQL BDD  │  │ UDP Client   │
+  │  Cirpark    │  │ Port 10001   │
+  └─────────────┘  └──────┬───────┘
+                          │ UDP
+                   ┌──────▼──────┐
+                   │  Capteurs   │
+                   │  Ultrason   │
+                   │  Modbus RTU │
+                   └─────────────┘
+                </code></pre>
+            </div>
+
+            <h4>Composants principaux</h4>
+            <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                <tr style="background: #e8f4f8;">
+                    <th style="padding: 10px; border: 1px solid #ccc;">Composant</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Rôle</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Technologie</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>Frontend</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Interface utilisateur, affichage temps réel</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">HTML5, CSS3, JavaScript, Chart.js</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>API REST</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">CRUD des ressources, orchestration</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">PHP 8, PDO</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>Base de Données</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Stockage des données persistantes</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">MySQL/MariaDB</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>UDP Client</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Communication avec capteurs, polling</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">PHP Sockets (cirpark_client_udp.php)</td>
+                </tr>
+            </table>
+
+            <h4>Flux de données</h4>
+            <p><strong>1. Acquisition données capteurs :</strong></p>
+            <ul>
+                <li>cirpark_client_udp.php s'exécute toutes les 60 secondes</li>
+                <li>Récupère liste des capteurs depuis la BDD</li>
+                <li>Envoie requête Modbus RTU via UDP au serveur capteurs</li>
+                <li>Reçoit réponse et stocke l'état dans la table 'etat'</li>
+            </ul>
+
+            <p><strong>2. Consultation données :</strong></p>
+            <ul>
+                <li>Frontend effectue requêtes AJAX vers l'API REST</li>
+                <li>API retourne les données au format JSON</li>
+                <li>Frontend met à jour l'interface en temps réel</li>
+            </ul>
+        </section>
+
+        <!-- API REST -->
+        <section class="doc-section" id="api-rest">
+            <h3>🔌 API REST - Routes</h3>
+            
+            <p><strong>Base URL :</strong> <code>http://localhost:8000/rest.php</code></p>
+            <p><strong>Format :</strong> JSON | <strong>Encodage :</strong> UTF-8</p>
+
+            <h4>GET - Lecture des données</h4>
+
+            <div style="background: #f0f8ff; padding: 15px; margin: 10px 0; border-left: 4px solid #2196F3;">
+                <p><strong>1. Tous les capteurs (avec derniers états)</strong></p>
+                <code>GET /rest.php/capteur</code>
+                <p><strong>Exemple :</strong></p>
+                <pre><code>curl http://localhost:8000/rest.php/capteur</code></pre>
+                <p><strong>Réponse (200 OK) :</strong></p>
+                <pre><code>[
+  {
+    "id": 1,
+    "nom": "SP1700",
+    "description": "Capteur Ultrason",
+    "type": "Normale",
+    "numero": "1700",
+    "etat": "Libre",
+    "date_heure": "2026-05-06 21:30:15",
+    "hauteur": 150,
+    "eclairage": 1
+  },
+  ...
+]</code></pre>
+            </div>
+
+            <div style="background: #f0f8ff; padding: 15px; margin: 10px 0; border-left: 4px solid #2196F3;">
+                <p><strong>2. Capteur spécifique</strong></p>
+                <code>GET /rest.php/capteur/{id}</code>
+                <p><strong>Exemple :</strong></p>
+                <pre><code>curl http://localhost:8000/rest.php/capteur/1</code></pre>
+                <p><strong>Réponse (200 OK) :</strong></p>
+                <pre><code>[
+  {
+    "id": 1,
+    "nom": "SP1700",
+    "description": "Capteur Ultrason",
+    "type": "Normale",
+    "numero": "1700",
+    "etat": "Libre",
+    "date_heure": "2026-05-06 21:30:15",
+    "hauteur": 150,
+    "eclairage": 1
+  }
+]</code></pre>
+            </div>
+
+            <div style="background: #f0f8ff; padding: 15px; margin: 10px 0; border-left: 4px solid #2196F3;">
+                <p><strong>3. Tous les états</strong></p>
+                <code>GET /rest.php/capteur/etat</code>
+                <p><strong>Réponse :</strong></p>
+                <pre><code>[
+  {
+    "id": 45,
+    "id_capteur": 1,
+    "etat": "Libre",
+    "date_heure": "2026-05-06 21:30:15"
+  },
+  ...
+]</code></pre>
+            </div>
+
+            <div style="background: #f0f8ff; padding: 15px; margin: 10px 0; border-left: 4px solid #2196F3;">
+                <p><strong>4. Historique états d'un capteur</strong></p>
+                <code>GET /rest.php/capteur/etat/{id_capteur}</code>
+                <p><strong>Réponse :</strong> Tous les états du capteur triés par date décroissante</p>
+            </div>
+
+            <div style="background: #f0f8ff; padding: 15px; margin: 10px 0; border-left: 4px solid #2196F3;">
+                <p><strong>5. Toutes les configurations</strong></p>
+                <code>GET /rest.php/capteur/configuration</code>
+            </div>
+
+            <div style="background: #f0f8ff; padding: 15px; margin: 10px 0; border-left: 4px solid #2196F3;">
+                <p><strong>6. Configuration d'un capteur</strong></p>
+                <code>GET /rest.php/capteur/configuration/{id_capteur}</code>
+            </div>
+
+            <h4>POST - Création de données</h4>
+
+            <div style="background: #f0f4ff; padding: 15px; margin: 10px 0; border-left: 4px solid #9C27B0;">
+                <p><strong>1. Créer un capteur</strong></p>
+                <code>POST /rest.php/capteur</code>
+                <p><strong>Body (JSON) :</strong></p>
+                <pre><code>{
+  "nom": "SP1726",
+  "type": "Normale",
+  "numero": "1726",
+  "description": "Capteur Ultrason"
+}</code></pre>
+                <p><strong>Réponse (201 Created) :</strong></p>
+                <pre><code>{"message": "Capteur ajouté"}</code></pre>
+            </div>
+
+            <div style="background: #f0f4ff; padding: 15px; margin: 10px 0; border-left: 4px solid #9C27B0;">
+                <p><strong>2. Ajouter un état</strong></p>
+                <code>POST /rest.php/capteur/etat</code>
+                <p><strong>Body (JSON) :</strong></p>
+                <pre><code>{
+  "id_capteur": 1,
+  "etat": "Occupee"
+}</code></pre>
+            </div>
+
+            <div style="background: #f0f4ff; padding: 15px; margin: 10px 0; border-left: 4px solid #9C27B0;">
+                <p><strong>3. Ajouter une configuration</strong></p>
+                <code>POST /rest.php/capteur/configuration</code>
+                <p><strong>Body (JSON) :</strong></p>
+                <pre><code>{
+  "id_capteur": 1,
+  "hauteur": 150,
+  "eclairage": 1
+}</code></pre>
+            </div>
+
+            <h4>PUT - Modification de données</h4>
+
+            <div style="background: #fff3e0; padding: 15px; margin: 10px 0; border-left: 4px solid #FF9800;">
+                <p><strong>1. Modifier un capteur</strong></p>
+                <code>PUT /rest.php/capteur/{id}</code>
+                <p><strong>Body (JSON) :</strong></p>
+                <pre><code>{
+  "nom": "SP1700_Updated",
+  "type": "Reserve",
+  "numero": "1700",
+  "description": "Capteur Ultrason modifié"
+}</code></pre>
+            </div>
+
+            <div style="background: #fff3e0; padding: 15px; margin: 10px 0; border-left: 4px solid #FF9800;">
+                <p><strong>2. Modifier un état</strong></p>
+                <code>PUT /rest.php/capteur/etat/{id_capteur}</code>
+                <p><strong>Body (JSON) :</strong></p>
+                <pre><code>{"etat": "Libre"}</code></pre>
+            </div>
+
+            <div style="background: #fff3e0; padding: 15px; margin: 10px 0; border-left: 4px solid #FF9800;">
+                <p><strong>3. Modifier une configuration</strong></p>
+                <code>PUT /rest.php/capteur/configuration/{id_capteur}</code>
+                <p><strong>Body (JSON) :</strong></p>
+                <pre><code>{
+  "hauteur": 200,
+  "eclairage": 0
+}</code></pre>
+            </div>
+
+            <h4>DELETE - Suppression de données</h4>
+
+            <div style="background: #ffebee; padding: 15px; margin: 10px 0; border-left: 4px solid #F44336;">
+                <p><strong>1. Supprimer un capteur (et toutes ses dépendances)</strong></p>
+                <code>DELETE /rest.php/capteur/{id}</code>
+                <p><em>Supprime également tous les états et configurations associés</em></p>
+            </div>
+
+            <div style="background: #ffebee; padding: 15px; margin: 10px 0; border-left: 4px solid #F44336;">
+                <p><strong>2. Supprimer les états d'un capteur</strong></p>
+                <code>DELETE /rest.php/capteur/etat/{id_capteur}</code>
+            </div>
+
+            <div style="background: #ffebee; padding: 15px; margin: 10px 0; border-left: 4px solid #F44336;">
+                <p><strong>3. Supprimer la configuration d'un capteur</strong></p>
+                <code>DELETE /rest.php/capteur/configuration/{id_capteur}</code>
+            </div>
+
+            <h4>Codes de réponse HTTP</h4>
+            <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                <tr style="background: #e8f4f8;">
+                    <th style="padding: 10px; border: 1px solid #ccc;">Code</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Signification</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>200 OK</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Requête réussie</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>201 Created</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Ressource créée avec succès</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>400 Bad Request</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Champs manquants ou invalides</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>500 Internal Server Error</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Erreur de connexion à la BDD ou serveur</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- PROTOCOLE UDP -->
+        <section class="doc-section" id="protocole-udp">
+            <h3>📡 Protocole UDP - Communication avec les capteurs</h3>
+
+            <h4>Vue d'ensemble</h4>
+            <p>Les capteurs communiquent via le <strong>protocole Modbus RTU</strong> sur UDP. Le script <code>cirpark_client_udp.php</code> effectue un polling régulier toutes les <strong>60 secondes</strong>.</p>
+
+            <h4>Configuration</h4>
+            <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                <tr style="background: #e8f4f8;">
+                    <th style="padding: 10px; border: 1px solid #ccc;">Paramètre</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Valeur</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Serveur</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">172.18.112.249</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Port</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">10001</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Protocole</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">UDP/Modbus RTU</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Intervalle</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">60 secondes</td>
+                </tr>
+            </table>
+
+            <h4>Format des trames Modbus RTU</h4>
+            
+            <p><strong>Requête (Request) :</strong></p>
+            <pre><code>┌─────────┬─────────┬──────────┬─────┐
+│ Addr H  │ Addr L  │ CodeFunc │ BCC │
+│ 1 byte  │ 1 byte  │ 1 byte   │ 1b  │
+└─────────┴─────────┴──────────┴─────┘
+
+Exemple pour capteur 0x1700:
+┌──────┬──────┬────────┬────┐
+│ 0x17 │ 0x00 │ 0x10   │ 0x27│
+└──────┴──────┴────────┴────┘</code></pre>
+
+            <p><strong>Réponse (Response) :</strong></p>
+            <pre><code>┌──────────┬──────────┬────────┬──────────┐
+│ Addr H   │ Addr L   │ Etat   │ Data...  │
+│ 1 byte   │ 1 byte   │ 1 byte │ N bytes  │
+└──────────┴──────────┴────────┴──────────┘
+
+États retournés:
+0x00 = Libre (place disponible)
+0x01 = Occupée (place occupée)
+Autre = Erreur/Inconnu</code></pre>
+
+            <h4>Calcul du BCC (Block Check Code)</h4>
+            <pre><code>BCC = (Addr_H + Addr_L + Code_Fonction) mod 256
+
+Exemple:
+0x17 + 0x00 + 0x10 = 0x27
+BCC = 0x27</code></pre>
+
+            <h4>Processus de communication</h4>
+            <pre><code>1. Boucle infinie toutes les 60s:
+   ├─ Récupérer liste capteurs (SELECT id, numero FROM capteur)
+   │
+   ├─ Pour chaque capteur:
+   │  ├─ Parser le numéro hexadécimal
+   │  ├─ Calculer le BCC
+   │  ├─ Créer trame Modbus RTU
+   │  ├─ Envoyer via UDP
+   │  ├─ Recevoir réponse
+   │  ├─ Parser l'état (byte[2])
+   │  ├─ Insérer dans table 'etat' avec timestamp NOW()
+   │  └─ Afficher logs
+   │
+   └─ Attendre 60 secondes
+
+Exemple logs:
+"message envoyé : 17001027"
+"La réponse est : 170000"
+"La place est libre !"
+"INSERT INTO etat (etat, date_heure, id_capteur)..."</code></pre>
+
+            <h4>Gestion des erreurs</h4>
+            <ul>
+                <li><strong>BDD indisponible :</strong> Message "BDD : ECHEC" et arrêt</li>
+                <li><strong>Timeout UDP :</strong> Socket timeout après attente réponse</li>
+                <li><strong>État inconnu :</strong> Enregistrement en tant que "Inconnu"</li>
+                <li><strong>Socket error :</strong> Logs affichés, boucle continue</li>
+            </ul>
+
+            <h4>Exécution du client UDP</h4>
+            <pre><code>php cirpark_client_udp.php
+
+(À mettre en place comme service/daemon en production)
+
+Exemple avec nohup (Linux):
+nohup php /path/to/cirpark_client_udp.php > logs/udp_client.log 2>&1 &
+
+Exemple avec Task Scheduler (Windows):
+Action: php.exe
+Paramètres: C:\path\to\cirpark_client_udp.php
+Répéter: Continuellement</code></pre>
+        </section>
+
+        <!-- SCHEMA BDD -->
+        <section class="doc-section" id="schema-bdd">
+            <h3>🗄️ Schéma Base de Données</h3>
+
+            <h4>Vue d'ensemble</h4>
+            <p>La base de données <strong>cirpark</strong> contient <strong>3 tables</strong> avec les relations suivantes :</p>
+
+            <pre><code>┌──────────────┐
+│   CAPTEUR    │
+├──────────────┤
+│ PK: id       │───────┐
+│ nom          │       │ FK
+│ description  │       │
+│ numero       │       │
+│ type         │       │
+└──────────────┘       │
+                       │
+        ┌──────────────┴──────────────┐
+        │                             │
+        ▼                             ▼
+┌──────────────┐            ┌──────────────┐
+│    ETAT      │            │CONFIGURATION │
+├──────────────┤            ├──────────────┤
+│ PK: id       │            │ PK: id       │
+│ FK: id_capteur           │ FK: id_capteur
+│ etat         │            │ hauteur      │
+│ date_heure   │            │ eclairage    │
+└──────────────┘            └──────────────┘</code></pre>
+
+            <h4>Table CAPTEUR</h4>
+            <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                <tr style="background: #e8f4f8;">
+                    <th style="padding: 10px; border: 1px solid #ccc;">Colonne</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Type</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Contraintes</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Description</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>id</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">INT</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">PK, AUTO_INCREMENT</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Identifiant unique</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>nom</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">VARCHAR(20)</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Nullable</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Ex: SP1700</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>description</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">VARCHAR(100)</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Nullable</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Ex: Capteur Ultrason</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>numero</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">VARCHAR(11)</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Nullable</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Adresse Modbus (hex): 1700</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>type</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">VARCHAR(20)</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Nullable</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Normale | Interdit | Reserve</td>
+                </tr>
+            </table>
+
+            <h4>Table ETAT</h4>
+            <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                <tr style="background: #e8f4f8;">
+                    <th style="padding: 10px; border: 1px solid #ccc;">Colonne</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Type</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Contraintes</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Description</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>id</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">INT</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">PK, AUTO_INCREMENT</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Identifiant unique</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>id_capteur</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">INT</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">FK → capteur.id</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Référence au capteur</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>etat</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">VARCHAR(20)</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Nullable</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Libre | Occupée | Inconnu</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>date_heure</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">DATETIME</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Nullable</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Timestamp du relevé</td>
+                </tr>
+            </table>
+
+            <h4>Table CONFIGURATION</h4>
+            <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                <tr style="background: #e8f4f8;">
+                    <th style="padding: 10px; border: 1px solid #ccc;">Colonne</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Type</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Contraintes</th>
+                    <th style="padding: 10px; border: 1px solid #ccc;">Description</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>id</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">INT</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">PK, AUTO_INCREMENT</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Identifiant unique</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>id_capteur</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">INT</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">FK → capteur.id</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Référence au capteur</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>hauteur</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">INT</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Nullable</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Hauteur capteur en cm</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc;"><strong>eclairage</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">TINYINT</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Nullable</td>
+                    <td style="padding: 10px; border: 1px solid #ccc;">Éclairage (0 ou 1)</td>
+                </tr>
+            </table>
+
+            <h4>Requêtes SQL utiles</h4>
+
+            <p><strong>Tous les capteurs avec leur dernier état :</strong></p>
+            <pre><code>SELECT c.*, e.etat, e.date_heure, conf.hauteur, conf.eclairage
+FROM capteur c
+LEFT JOIN etat e ON c.id = e.id_capteur
+  AND e.id = (SELECT MAX(id) FROM etat WHERE id_capteur = c.id)
+LEFT JOIN configuration conf ON c.id = conf.id_capteur;</code></pre>
+
+            <p><strong>Statistiques d'occupation :</strong></p>
+            <pre><code>SELECT 
+  COUNT(*) as total_places,
+  SUM(CASE WHEN e.etat = 'Occupée' THEN 1 ELSE 0 END) as occupees,
+  SUM(CASE WHEN e.etat = 'Libre' THEN 1 ELSE 0 END) as libres
+FROM capteur c
+LEFT JOIN etat e ON c.id = e.id_capteur
+  AND e.id = (SELECT MAX(id) FROM etat WHERE id_capteur = c.id);</code></pre>
+
+            <p><strong>Historique des états d'un capteur :</strong></p>
+            <pre><code>SELECT * FROM etat 
+WHERE id_capteur = 1 
+ORDER BY date_heure DESC 
+LIMIT 100;</code></pre>
+
+            <p><strong>Places par type :</strong></p>
+            <pre><code>SELECT type, COUNT(*) as nombre
+FROM capteur
+GROUP BY type;</code></pre>
+        </section>
+
+        <!-- Footer Info -->
+        <section class="doc-section" style="background: #f5f5f5; padding: 20px; border-radius: 5px; margin-top: 30px;">
+            <h4>📞 Support et contact</h4>
+            <p>Pour toute question technique, consultez le README ou contactez l'équipe Cirpark.</p>
+            <p><strong>Dernière mise à jour :</strong> Mai 2026</p>
+        </section>
+    </main>
+    <footer>
+        <p>Projet réalisé par Maxime | Ambre | Melissa de BTS CIEL-IR - 1ère année</p>
+    </footer>
 </body>
 </html>

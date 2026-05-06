@@ -168,7 +168,7 @@ main {
 .btn-vert {
     background-color: var(--secondary-color);
     color: var(--white-color);
-    /*border-color: var(--secondary-color);*/
+    border-color: var(--secondary-color);
 }
 
 .btn-bleu {
@@ -524,16 +524,16 @@ footer {
     background-color: var(--secondary-color);
 }
 
-/* =========== STATISTIQUES =========== */
-
 .stats-refresh {
+    background: linear-gradient(90deg, rgba(26,188,156,0.06), rgba(41,128,185,0.04));
     display: flex;
-    gap: 20px;
-    margin: 20px 0;
-    padding: 15px;
-    background: rgba(26, 188, 156, 0.15);
-    border-radius: 8px;
     align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    padding: 12px 18px;
+    border-radius: 10px;
+    border: 1px solid rgba(41,128,185,0.06);
+    box-shadow: 0 8px 22px rgba(41,128,185,0.05);
     flex-wrap: wrap;
 }
 
@@ -550,25 +550,76 @@ footer {
 .stats-refresh__controls {
     flex: 1;
     min-width: 300px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .stats-refresh__label {
-    font-weight: bold;
-    margin-right: 15px;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
 }
 
-.stats-refresh__label:last-child {
-    margin-right: 0;
-}
-
+/* Custom toggle look for the refresh checkbox */
 .stats-refresh__checkbox {
-    margin-right: 8px;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 44px;
+    height: 24px;
+    border-radius: 999px;
+    background: #e6e6e6;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,0.04);
 }
 
+.stats-refresh__checkbox::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: var(--white-color);
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+    transition: transform 0.18s ease;
+}
+
+.stats-refresh__checkbox:checked {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.stats-refresh__checkbox:checked::after {
+    transform: translateX(20px);
+}
+
+/* Styled select with custom arrow */
 .stats-refresh__select {
-    margin-left: 8px;
-    padding: 5px 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    padding: 6px 36px 6px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg-color);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23333' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    cursor: pointer;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.stats-refresh__select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 6px 18px rgba(41,128,185,0.06);
+    outline: none;
 }
 
 .stats-grid {
@@ -633,27 +684,6 @@ footer {
         text-align: center;
     }
 }
-#refresh{
-    margin: 20px 0;
-    padding: 15px;
-    background: rgba(26, 188, 156, 0.15);
-    border-radius: 8px;
-    text-align: center;
-}
-.refreshtoggle{
-    font-weight: bold;
-    margin-right: 15px;
-}
-.autoRefreshToggle{
-    margin-right: 8px;
-}
-.refreshIntervalLabel{
-    font-weight: bold;
-}
-.refreshInterval{
-    margin-left: 8px;
-    padding: 5px 10px;
-}
 .horloge{
     position:absolute;
     top:20px;
@@ -664,4 +694,74 @@ footer {
 }
 .index-header{
     position:relative;
+}
+
+/* =========== DOCUMENTATION =========== */
+
+.doc-section {
+    margin: 25px 0;
+    padding: 20px;
+    background-color: var(--card-bg-color);
+    border-left: 4px solid var(--secondary-color);
+    border-radius: 5px;
+}
+
+.doc-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--text-color);
+    font-size: 18px;
+}
+
+.doc-section h4 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    font-size: 15px;
+}
+
+.doc-section ul,
+.doc-section ol {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.doc-section li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+.doc-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.doc-section code {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.doc-section pre {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+
+.doc-section pre code {
+    background: none;
+    padding: 0;
+}
+
+.doc-section strong {
+    font-weight: bold;
+}
+
+.doc-section em {
+    font-style: italic;
 }
