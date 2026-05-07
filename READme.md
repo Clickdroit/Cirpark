@@ -1,7 +1,7 @@
 <div align="center">
   <h1>✨ Une marocaine au portugal ✨</h1>
-  <p><b>Progression (30%) :</b></p>
-  <p>🟩 🟩 🟩 🟩 ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜ ⬜</p>
+  <p><b>Progression (70%) :</b></p>
+  <p>🟩 🟩 🟩 🟩🟩 🟩 🟩 🟩 🟩 ⬜ ⬜ ⬜ ⬜</p>
 </div>
 
 ---
@@ -27,7 +27,7 @@
 - [-] Création du Formulaire de sécuriter
 
 ### 🟡 Priorité basse
-- [ ] Faire une documentation *(architecture, routes API, protocole UDP, schéma BDD)*
+- [x] Faire une documentation *(architecture, routes API, protocole UDP, schéma BDD)*
 - [ ] Faire la page équipe *(photos/avatars, rôles, répartition des tâches)*
 - [x] Améliorer le responsive mobile *(adaptation pour tablettes et téléphones)*
 - [ ] Ajouter des headers CORS et Content-Type dans l'API REST

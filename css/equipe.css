@@ -1,0 +1,22 @@
+#Maxime, #Ambre, #Melissa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    text-align: center;
+}
+#Maxime img, #Ambre img, #Melissa img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-top: 15px;
+}
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    gap: 20px;
+}
