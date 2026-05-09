@@ -1,0 +1,99 @@
+/* plan.css - Projet Cirpark */
+#parking {
+    width: 90%;
+    margin: 20px auto;
+    height: 600px;
+    background-color: var(--gray-color);
+    border: 3px solid var(--primary-color);
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+#range1, #range2, #chemin, #range3, #range4 {
+    width: 100%;
+    height: 16%;
+    display: flex;
+}
+
+#range1 .place, #range3 .place {
+    border-left: 2px solid var(--white-color);
+    height: 100%;
+    width: 10%;
+    border-right: 2px solid var(--white-color);
+    border-top: 3px solid var(--white-color);
+    box-sizing: border-box;
+}
+
+#range2 .place, #range4 .place {
+    border-left: 2px solid var(--white-color);
+    border-bottom: 3px solid var(--white-color);
+    height: 100%;
+    width: 10%;
+    border-right: 2px solid var(--white-color);
+    box-sizing: border-box;
+}
+
+.route {
+    height: 100%;
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--white-color);
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.place {
+    position: relative;
+    transition: background-color 0.3s, transform 0.2s;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+}
+
+.voiture-img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+.place:hover {
+    transform: scale(1.1);
+    z-index: 10;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+}
+
+.place::after {
+    content: attr(data-info);
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.place:hover::after {
+    opacity: 1;
+    bottom: 115%;
+}
+
+.place.vert {
+    background-color: var(--green-color);
+}
+
+.place.rouge {
+    background-color: var(--red-color);
+}

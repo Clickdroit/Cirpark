@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Équipe - Cirpark</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/equipe.css">
     <link rel="stylesheet" href="../style.css">
 </head>
-<body>
+<body class="team-page">
     <header id="index-header" class="index-header">
         <div id="horloge" class="horloge">--/--/---- --:--:--</div>
         <div class="logo-container">
@@ -25,26 +28,124 @@
             </ul>
         </nav>
     </header>
-    <main>
-        <div class="description-projet">
-            <h2>Équipe</h2>
-            <p>Page équipe à compléter (photos, rôles, répartition des tâches).</p>
-        </div>
-        <section>
-            <div id="Maxime">
-                <h3>Maxime</h3>
-                <img src="https://github.com/Clickdroit.png" alt="Maxime">
-                <p>Rôle : Développement du backend et gestion de la base de données.</p>
+    <main class="team-main">
+        <section class="team-hero">
+            <div class="team-hero__content">
+                <p class="team-eyebrow">Equipe projet</p>
+                <h2>Une equipe complementaire, une mission claire</h2>
+                <p>
+                    Cirpark est porte par un trio qui partage la meme obsession : rendre le parking plus fluide,
+                    plus lisible, et plus intelligent. Ici, chaque role a ete pense pour couvrir tout le cycle,
+                    du capteur a l'interface.
+                </p>
+                <div class="team-badges">
+                    <span>3 membres</span>
+                    <span>Backend + Frontend</span>
+                    <span>UML + API + UI</span>
+                </div>
             </div>
-            <div id="Ambre">
-                <h3>Ambre</h3>
-                <img src="https://github.com/Ambre55.png" alt="Ambre">
-                <p>Rôle : Conception de l'interface utilisateur.</p>
+            <div class="team-hero__card">
+                <h3>Ce que l'equipe a livre</h3>
+                <ul>
+                    <li>API REST complete avec routes GET/POST/PUT/DELETE</li>
+                    <li>Dashboard stats + auto-refresh en temps reel</li>
+                    <li>Documentation technique et plan UML</li>
+                </ul>
             </div>
-            <div id="Melissa">
-                <h3>Melissa</h3>
-                <img src="https://github.com/anderson-pixel.png" alt="Melissa">
-                <p>Rôle : Développement du backend.</p>
+        </section>
+
+        <section class="team-grid">
+            <article class="team-card" id="Maxime">
+                <div class="team-card__header">
+                    <img src="https://github.com/Clickdroit.png" alt="Maxime">
+                    <div>
+                        <h3>Maxime</h3>
+                        <p class="team-role">Backend & Data</p>
+                    </div>
+                </div>
+                <p class="team-mission">
+                    Orchestration de l'API REST, structure des donnees et logique capteurs.
+                </p>
+                <div class="team-tags">
+                    <span>API REST</span>
+                    <span>BDD</span>
+                    <span>Stats</span>
+                </div>
+                <ul class="team-tasks">
+                    <li>Routes et gestion des capteurs</li>
+                    <li>Modelisation SQL + corrections</li>
+                    <li>Graphiques d'occupation</li>
+                </ul>
+            </article>
+
+            <article class="team-card" id="Ambre">
+                <div class="team-card__header">
+                    <img src="https://github.com/Ambre55.png" alt="Ambre">
+                    <div>
+                        <h3>Ambre</h3>
+                        <p class="team-role">UX/UI & Frontend</p>
+                    </div>
+                </div>
+                <p class="team-mission">
+                    Experience utilisateur, coherence visuelle et navigation fluide.
+                </p>
+                <div class="team-tags">
+                    <span>UI</span>
+                    <span>Responsive</span>
+                    <span>Navigation</span>
+                </div>
+                <ul class="team-tasks">
+                    <li>Design du dashboard et pages</li>
+                    <li>Amelioration du responsive mobile</li>
+                    <li>Intefaces graphiques et accessibilite</li>
+                </ul>
+            </article>
+
+            <article class="team-card" id="Melissa">
+                <div class="team-card__header">
+                    <img src="https://github.com/anderson-pixel.png" alt="Melissa">
+                    <div>
+                        <h3>Melissa</h3>
+                        <p class="team-role">Integration & Logiciel</p>
+                    </div>
+                </div>
+                <p class="team-mission">
+                    Cohesion technique, fiabilite des flux et documentation terrain.
+                </p>
+                <div class="team-tags">
+                    <span>Integration</span>
+                    <span>Tests</span>
+                    <span>Docs</span>
+                </div>
+                <ul class="team-tasks">
+                    <li>Verification des flux et scenarios</li>
+                    <li>Protocoles et documentation</li>
+                    <li>Validation des donnees</li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="team-roles">
+            <div class="team-roles__header">
+                <h3>Repartition des taches</h3>
+                <p>Une vision claire des responsabilites pour livrer vite et proprement.</p>
+            </div>
+            <div class="team-roles__grid">
+                <div class="team-role-card">
+                    <h4>API & Base de donnees</h4>
+                    <p>Maxime</p>
+                    <span>REST, SQL, logique capteurs</span>
+                </div>
+                <div class="team-role-card">
+                    <h4>Interface & Experience</h4>
+                    <p>Ambre</p>
+                    <span>UI, responsive, navigation</span>
+                </div>
+                <div class="team-role-card">
+                    <h4>Integration & Qualite</h4>
+                    <p>Melissa</p>
+                    <span>Tests, docs, validation</span>
+                </div>
             </div>
         </section>
     </main>

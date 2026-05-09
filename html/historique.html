@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Historique - Cirpark</title>
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/historique.css">
 </head>
 <body>
     <header id="index-header" class="index-header">
@@ -32,23 +33,25 @@
             <h2>Historique</h2>
             <p>Historique des mouvements et des événements du parking.</p>
         </div>
+        <section id="section">
+            <div class="historique-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date et Heure</th>
+                            <th>Capteur</th>
+                            <th>Événement</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historiqueTableBody"></tbody>
+                </table>
+                <div id="historiqueEmpty" class="historique-empty">Chargement de l'historique...</div>
+            </div>
+        </section>
     </main>
-    <section>
-        <div class="historique-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date et Heure</th>
-                        <th>Capteur</th>
-                        <th>Événement</th>
-                    </tr>
-                </thead>
-                <tbody id="historiqueTableBody">
-                </tbody>
-            </table>
-            <div id="historiqueEmpty" class="historique-empty">Chargement de l'historique...</div>
-        </div>
-    </section>
+    <footer>
+        <p>Projet réalisé par Maxime | Ambre | Melissa de BTS CIEL-IR - 1ère année</p>
+    </footer>
     <script src="../js/historique.js"></script>
 </body>
 </html>

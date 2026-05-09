@@ -1,0 +1,139 @@
+/* statistiques.css - Projet Cirpark */
+.stats-refresh {
+    background: linear-gradient(90deg, rgba(26, 188, 156, 0.06), rgba(41, 128, 185, 0.04));
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    padding: 12px 18px;
+    border-radius: 10px;
+    border: 1px solid rgba(41, 128, 185, 0.06);
+    box-shadow: 0 8px 22px rgba(41, 128, 185, 0.05);
+    flex-wrap: wrap;
+}
+
+.stats-refresh__button {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.stats-refresh__title {
+    margin: 0;
+    font-size: 14px;
+}
+
+.stats-refresh__controls {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.stats-refresh__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.stats-refresh__checkbox {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 44px;
+    height: 24px;
+    border-radius: 999px;
+    background: #e6e6e6;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.stats-refresh__checkbox::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: var(--white-color);
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+    transition: transform 0.18s ease;
+}
+
+.stats-refresh__checkbox:checked {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.stats-refresh__checkbox:checked::after {
+    transform: translateX(20px);
+}
+
+.stats-refresh__select {
+    -webkit-appearance: none;
+    appearance: none;
+    padding: 6px 36px 6px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg-color);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23333' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    cursor: pointer;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.stats-refresh__select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 6px 18px rgba(41, 128, 185, 0.06);
+    outline: none;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.stats-card {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+}
+
+.stats-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.stats-card h3 {
+    font-size: 16px;
+    margin-bottom: 14px;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 280px;
+    width: 100%;
+}
+
+.stats-card:last-child {
+    grid-column: 1 / -1;
+}
+
+@media screen and (max-width: 600px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
