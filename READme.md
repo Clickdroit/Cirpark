@@ -30,8 +30,7 @@
 - [x] Faire une documentation *(architecture, routes API, protocole UDP, schéma BDD)*
 - [x] Faire la page équipe *(photos/avatars, rôles, répartition des tâches)*
 - [x] Améliorer le responsive mobile *(adaptation pour tablettes et téléphones)*
-- [ ] Ajouter des headers CORS et Content-Type dans l'API REST
-- [ ] Ajouter de la validation des données dans POST/PUT *(vérifier que les champs existent avant utilisation)*
+- [ ] Ajouter de la validation des données dans POST/PUT *(vérifier que les champs existent avant utilisation)* ??
 
 ### ⚠️ Important
 - [ ] **SUIVRE LES ATTENDUES !!!**
