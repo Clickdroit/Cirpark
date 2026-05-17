@@ -1,0 +1,187 @@
+body {
+
+    font-family: Arial, sans-serif;
+
+    background-color: #093593; /* Une couleur de fond légère */
+    
+    display: flex;
+
+    justify-content: center; /* Centre le formulaire horizontalement */
+
+    align-items: center;     /* Centre le formulaire verticalement */
+
+    height: 100vh;           /* Prend toute la hauteur de l'écran */
+
+    margin: 0;
+
+}
+
+
+/* Style de la boîte du formulaire */
+
+form {
+
+  background-color: rgb(84, 82, 236);
+ padding: 30px;
+
+    border-radius: 10px;    /* Arrondi des angles */
+
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Petite ombre portée */
+
+    width: 350px;           /* Largeur fixe du formulaire */
+
+    text-align: center;     /* Centre le texte à l'intérieur */
+
+}
+
+
+/* Style du titre H1 */
+
+h1 {
+
+    font-size: 24px;
+
+    color: #333;
+
+    margin-bottom: 10px;
+
+}
+
+
+/* Style du paragraphe sous le titre */
+
+p {
+
+    font-size: 14px;
+
+    color: #ffffff;
+
+    margin-bottom: 20px;
+
+}
+
+
+/* Conteneur des champs de saisie */
+
+.input-wrapper {
+
+    margin-bottom: 15px;    /* Espace entre chaque champ */
+
+    position: relative;     /* Permet de positionner les icônes à l'intérieur si besoin */
+
+}
+
+
+/* Style des champs de saisie (input) */
+
+input {
+
+    width: 100%;            /* Prend toute la largeur du conteneur */
+
+    padding: 12px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 5px;
+
+    box-sizing: border-box; /* Évite que le padding n'agrandisse la largeur */
+
+    font-size: 14px;
+
+}
+
+
+/* Style du bouton */
+
+button {
+
+    width: 100%;
+
+    padding: 10px;
+
+    background-color: #007bff; /* Couleur bleue classique */
+
+    color: white;
+
+    border: none;
+
+    border-radius: 5px;
+
+    cursor: pointer;        /* Change le curseur en main au survol */
+
+    font-size: 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;              /* Espace entre le texte et l'icône de la flèche */
+
+}
+
+
+/* Effet au survol du bouton */
+
+button:hover {
+
+    background-color: #0056b3; /* Bleu plus foncé au survol */
+
+}
+
+
+/* On positionne le conteneur pour pouvoir placer l'icône par rapport à lui */
+
+.input-wrapper {
+
+    position: relative;
+
+    width: 100%;
+
+    margin-bottom: 20px;
+
+}
+
+
+/* Style de l'icône à l'intérieur du champ */
+
+.input-wrapper i {
+
+    position: absolute; /* Permet de "flotter" sur l'input */
+
+    right: 15px;        /* Aligné à droite avec une petite marge */
+
+    top: 50%;           /* Centré verticalement */
+
+    transform: translateY(-50%); /* Ajustement précis du centrage vertical */
+
+    color: #888;        /* Couleur grise pour ressembler à ton image */
+
+    font-size: 20px;    /* Taille de l'icône */
+
+}
+
+
+/* On ajoute un peu de padding à droite de l'input pour que le texte ne touche pas l'icône */
+
+input {
+
+    width: 100%;
+
+    padding: 12px 40px 12px 12px; /* 40px de marge à droite pour l'icône */
+
+    border-radius: 8px;
+
+    border: 1px solid #ccc;
+
+    box-sizing: border-box;
+
+}
+
+
+.degrade-angulaire {
+
+  background: linear-gradient(70deg, blue, rgb(66, 83, 188));
+
+}

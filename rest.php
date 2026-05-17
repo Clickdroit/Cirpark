@@ -153,6 +153,40 @@ if ($req_methode == 'POST') {
         http_response_code(201);
         echo json_encode(["message" => "Configuration ajoutée"]);
     }
+
+    // POST /login
+    elseif (count($req_data) == 2 && $req_data[1] == 'login') {
+        if (!isset($donnees['login'], $donnees['password'])) {
+            http_response_code(400);
+            echo json_encode(["erreur" => "Champs requis : login, password"]);
+            die();
+        }
+        $login = $donnees['login'];
+        $password = $donnees['password'];
+
+        $requete = "SELECT * FROM utilisateurs WHERE login = :login";
+        $req_prep = $maConnexion->prepare($requete);
+        $req_prep->bindValue(':login', $login);
+        $req_prep->execute();
+        $utilisateur = $req_prep->fetch(PDO::FETCH_ASSOC);
+
+        // Pour ce projet, on accepte le mot de passe en clair ou haché (si on veut être propre)
+        // Ici on compare en clair comme dans connexion.php
+        if ($utilisateur && $password == $utilisateur['mot_de_passe']) {
+            echo json_encode([
+                "success" => true,
+                "message" => "Connexion réussie",
+                "user" => [
+                    "id" => $utilisateur['id_user'],
+                    "login" => $utilisateur['login'],
+                    "role" => $utilisateur['role']
+                ]
+            ]);
+        } else {
+            http_response_code(401);
+            echo json_encode(["success" => false, "erreur" => "Identifiants incorrects"]);
+        }
+    }
 }
 
 //.................. Pour le PUT...........
