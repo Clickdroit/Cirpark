@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(result => {
             if (result.success) {
                 alert("Connexion réussie ! Bienvenue " + result.user.login);
-                // On stocke les infos de l'utilisateur dans localStorage pour la persistance
+                // On stocke les infos de l'utilisateur dans localStorage
                 localStorage.setItem('user', JSON.stringify(result.user));
-                window.location.href = "../index.html"; // Redirection vers l'accueil
+                window.location.href = "../index.html"; // Redirection vers l'index
             } else {
                 alert("Erreur : " + (result.erreur || "Identifiants incorrects"));
             }
