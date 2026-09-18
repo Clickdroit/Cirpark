@@ -45,3 +45,19 @@
 | Plan UML réalisé | ✅ |
 | REST.php complété (GET) | ✅ |
 | Ajout POST/PUT/DELETE | ✅ |
+
+## Vérification locale de l'API PHP
+
+Depuis la racine du projet, avec PHP disponible dans le terminal :
+
+```powershell
+php -l rest.php
+php -l cirpark_client_udp.php
+php -S 127.0.0.1:8080
+```
+
+Ouvrir ensuite `http://127.0.0.1:8080/index.html`. Le serveur intégré sert
+uniquement au développement. Les requêtes SQL nécessitent aussi la base
+configurée dans le projet ; les échanges UDP nécessitent le serveur Cirpark.
+Les fichiers SQL sont dans `db/`. Ne pas les importer dans une base existante
+sans avoir vérifié leur contenu et sauvegardé cette base.
