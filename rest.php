@@ -2,7 +2,7 @@
 try {
     $maConnexion = new PDO("mysql:host=localhost;port=3306;dbname=cirpark", "root", "");
 } catch (PDOException $e) {
-    http_response_code(500);
+    //http_response_code(500);
     echo json_encode(["erreur" => "Connexion BDD impossible"]);
     die();
 }
@@ -13,6 +13,42 @@ if (isset($_SERVER['PATH_INFO'])) {
     $req_path = $_SERVER['PATH_INFO'];
     $req_data = explode('/', $req_path);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //.................. Pour le GET...........
 if ($req_methode == 'GET') {
     if (count($req_data) == 2 && $req_data[1] == 'capteur') {
@@ -67,13 +103,21 @@ if ($req_methode == 'GET') {
         $resultat = $req_prep->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($resultat);
     }
+    // Vérifie si l'URL contient 4 parties et correspond à /capteur/configuration/{id}
     elseif (count($req_data) == 4 && $req_data[1] == 'capteur' && $req_data[2] == 'configuration') {
+        // Récupère l'ID du capteur depuis l'URL (4ème partie) et le convertit en entier
         $id = (int)$req_data[3];
+        // Définit la requête SQL pour récupérer la configuration du capteur spécifique
         $requete = "SELECT * FROM configuration WHERE id_capteur = :id";
+        // Prépare la requête SQL avec PDO pour des raisons de sécurité (prévention des injections SQL)
         $req_prep = $maConnexion->prepare($requete);
+        // Lie la variable $id au paramètre :id de la requête, en forçant le type entier (PDO::PARAM_INT)
         $req_prep->bindValue(':id', $id, PDO::PARAM_INT);
+        // Exécute la requête SQL préparée
         $req_prep->execute();
+        // Récupère toutes les lignes de résultat de la requête sous forme de tableau associatif
         $resultat = $req_prep->fetchAll(PDO::FETCH_ASSOC);
+        // Convertit le tableau PHP en chaîne de caractères au format JSON et l'affiche pour la réponse de l'API
         echo json_encode($resultat);
     }
 }
